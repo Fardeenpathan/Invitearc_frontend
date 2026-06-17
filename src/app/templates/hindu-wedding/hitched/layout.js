@@ -1,4 +1,4 @@
-import DisableInspect from "@/app/components/DisableInspect";
+// import DisableInspect from "@/app/components/DisableInspect";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./hitched-globals.css";
 
