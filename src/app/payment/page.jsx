@@ -1,6 +1,6 @@
 "use client";
-
-import { useContext, useEffect, useState } from "react";
+export const dynamic = "force-dynamic";
+import {Suspense, useContext, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
@@ -25,7 +25,7 @@ const loadRazorpayScript = () => {
   });
 };
 
-export default function PaymentPage() {
+function PaymentContent() {
   const { user, loading, openAuthModal } = useContext(AuthContext);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -325,5 +325,13 @@ console.log("Logo URL:", `${window.location.origin}/logo.png`);
         </div>
       </section>
     </main>
+  );
+}
+
+export default function PaymentPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PaymentContent />
+    </Suspense>
   );
 }

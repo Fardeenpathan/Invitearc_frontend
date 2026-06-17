@@ -47,7 +47,7 @@ export const metadata = {
 
 };
 
-export default function RootLayout({
+ export default function RootLayout({
   children,
 }) {
   return (
@@ -55,7 +55,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <DisableInspect /> 
+    
         {children}
       </body>
     </html>
