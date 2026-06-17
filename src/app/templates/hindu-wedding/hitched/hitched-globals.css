@@ -1,0 +1,182 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Upright:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Infant:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff; 
+  --foreground: #171717;
+}
+
+@theme inline {
+  --breakpoint-3xl: 120rem; /* 1920px */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.font-cormorant {
+  font-family: 'Cormorant', serif;
+}
+
+.font-Cormorant-upright {
+  font-family: 'Cormorant Upright', serif;
+}
+
+.font-parisienne {
+  font-family: "Parisienne", serif;
+  font-weight: 400;
+}
+
+.font-cormorant-infant {
+  font-family: 'Cormorant Infant', serif;
+}
+
+.mySwiper {
+  padding: 60px 0;
+}
+
+.mySwiper .swiper-slide {
+  transition: all 0.4s ease;
+  transform: scale(0.7);
+  opacity: 0.5;
+}
+
+.mySwiper .swiper-slide-prev,
+.mySwiper .swiper-slide-next {
+  transform: scale(0.85);
+  opacity: 0.8;
+}  
+
+.mySwiper .swiper-slide-active {
+  transform: scale(1);
+  opacity: 1;
+  z-index: 10;
+}
+
+.mySwiper img {
+  width: 100%;
+}
+
+.mySwiper .swiper-pagination-bullet-active {
+  background: #ffcc00;   /* active bullet color */
+  opacity: 1;
+}
+
+
+@keyframes flower-fall {
+  0% {
+    transform: translateY(-10vh) rotate(0deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0.8;
+  }
+}
+
+
+/* Base lamp */
+.floating-lamp {
+  position: absolute;
+  animation-name: lampFlow;
+  /* animation-duration: 2.5s; */
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+  opacity: 0;
+}
+
+/*
+  This creates:
+  - left → right movement
+  - slow vertical drift
+  - curved / non-straight path illusion
+*/
+@keyframes lampFlow {
+  0% {
+    transform: translateX(-30vw) translateY(40px) scale(var(--scale, 1));
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  25% {
+    transform: translateX(10vw) translateY(-20px) scale(var(--scale, 1));
+  }
+
+  45% {
+    transform: translateX(35vw) translateY(30px) scale(var(--scale, 1));
+  }
+
+  65% {
+    transform: translateX(60vw) translateY(-10px) scale(var(--scale, 1));
+  }
+
+  85% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(110vw) translateY(20px) scale(var(--scale, 1));
+    opacity: 0;
+  }
+}
+
+/*
+  This creates:
+  - right → left movement
+  - slow vertical drift
+  - curved / non-straight path illusion
+*/
+@keyframes lampFlowReverse {
+  0% {
+    transform: translateX(130vw) translateY(40px) scale(var(--scale, 1));
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  25% {
+    transform: translateX(90vw) translateY(-20px) scale(var(--scale, 1));
+  }
+
+  45% {
+    transform: translateX(65vw) translateY(30px) scale(var(--scale, 1));
+  }
+
+  65% {
+    transform: translateX(40vw) translateY(-10px) scale(var(--scale, 1));
+  }
+
+  85% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(-30vw) translateY(20px) scale(var(--scale, 1));
+    opacity: 0;
+  }
+}
+
