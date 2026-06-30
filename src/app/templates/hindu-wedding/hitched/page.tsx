@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import axios from "axios";
 import config from "../../../../config/config";
 import MarriageCountdown from "./components/MarriageCountdown";
@@ -50,6 +49,7 @@ const initialData = {
   groomDetails: "(Grandson of Mrs. Kanta & Mr. Kamal Bhawnani)\n(Son of Mrs. Kanchan & Mr. Sanjay Bhawnani)",
   brideName: "Ritika",
   brideDetails: "(Daughter of Mrs. Sarita & Mr. Pradeep Jain)",
+  brideGrandParentsName:"(Granddaughter of Shri J.S. Kapoor)",
   eventIntro: "On the following events",
   noteText: "Note: Themes optional, vibes unmatched",
   events: [
@@ -243,38 +243,7 @@ export default function Home({
         }}
       >
         {isOwner && (
-          <div className="sticky top-4 z-50 mx-4 rounded-3xl border border-white/20 bg-white/90 p-4 shadow-2xl backdrop-blur-sm">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              {/* <div>
-                <p className="text-sm font-semibold text-slate-900">Editable Hitched Template</p>
-                <p className="text-xs text-slate-500">Toggle edit mode to update the invitation text live.</p>
-              </div> */}
-              <div className="flex flex-wrap items-center gap-2">
-                <button
-                  onClick={() => setEditMode((prev) => !prev)}
-                  className="rounded-full border border-slate-200 bg-[#861E1D] px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700 cursor-pointer"
-                >
-                  {editMode ? "Hide editor" : "Edit content"}
-                </button>
-                {editMode && (
-                  <>
-                    <button
-                      onClick={saveEdits}
-                      className="rounded-full bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-500 "
-                    >
-                      Save
-                    </button>
-                    <button
-                      onClick={resetEdits}
-                      className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-slate-100"
-                    >
-                      Reset
-                    </button>
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
+          <></>
         )}
         {editMode && (
           <div className="fixed inset-0 z-50 overflow-auto bg-black/40 p-4">
@@ -355,11 +324,19 @@ export default function Home({
                     />
                   </label>
                   <label className="space-y-2 text-sm text-slate-700">
-                    Bride details
+                    Bride details<br/>
+                    Bride Parents Name
                     <textarea
                       rows={3}
                       value={data.brideDetails}
                       onChange={(e) => updateField("brideDetails", e.target.value)}
+                      className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none"
+                    />
+                    Bride GrandParents Name
+                    <textarea
+                      rows={3}
+                      value={data.brideGrandParentsName}
+                      onChange={(e) => updateField("brideGrandParentsName", e.target.value)}
                       className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm outline-none"
                     />
                   </label>
@@ -619,22 +596,29 @@ export default function Home({
             <p className="text-white font-Cormorant-upright lg:text-[30px] md:text-2xl text-[16px] mt-2 whitespace-pre-line">
               {data.brideDetails}
             </p>
+            <p className="text-white font-Cormorant-upright lg:text-[30px] md:text-2xl text-[16px] mt-2 whitespace-pre-line">
+              {data.brideGrandParentsName}
+            </p>
 
             <p className="text-white font-Cormorant-upright lg:text-3xl md:text-2xl text-[24px] mt-8">
               {data.eventIntro}
             </p>
+         
           </div>
 
           <div className="flex justify-center mt-20">
             <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 lg:gap-32 gap-16 ">
               {(data?.events || []).map((event, i) => (
                 <div key={i} className="flex flex-col items-center text-center">
-                  <img
-                    src={event.image}
-                    alt={event.venue}
-                    className="lg:w-80 lg-w-95 sm:w-76 h-auto w-70 "
-                  />
-
+                  {event.image && (
+                    <div className="mb-4 w-full overflow-hidden rounded-3xl border border-white/20 bg-white/10 shadow-sm">
+                      <img
+                        src={event.image}
+                        alt={event.title_ceremony ? `${event.title_ceremony} image` : `Event ${i + 1} image`}
+                        className="h-48 w-full object-cover"
+                      />
+                    </div>
+                  )}
                   <h2 className="text-white font-Cormorant-upright lg:text-[45px] md:text-2xl text-[37px] mt-4 font-bold">
                     {event.title_ceremony}
                   </h2>

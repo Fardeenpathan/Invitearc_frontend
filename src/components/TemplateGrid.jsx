@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
@@ -16,6 +17,7 @@ const previewImages = {
 };
 
 export default function TemplateGrid() {
+  const router = useRouter();
   const { user, token, openAuthModal } = useContext(AuthContext);
   const [apiTemplates, setApiTemplates] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -67,23 +69,7 @@ export default function TemplateGrid() {
     fetchCountry();
   }, []);
 
-  useEffect(() => {
-    const pendingTemplate = localStorage.getItem("pendingTemplate");
-
-    if (user && pendingTemplate) {
-      const template = JSON.parse(pendingTemplate);
-
-      localStorage.removeItem("pendingTemplate");
-
-      handlePayment(template);
-    }
-  }, [user]);
-
-  const descriptionText = (template) => {
-    return template.description;
-  };
-
-  const handlePayment = async (template) => {
+  const handlePayment = useCallback(async (template) => {
     if (!user) {
       localStorage.setItem("pendingTemplate", JSON.stringify(template));
 
@@ -94,7 +80,6 @@ export default function TemplateGrid() {
     try {
       const response = await axios.post(
         `${config.api.baseUrl}/api/client-templates/create-order`,
-
         {
           templateId: template._id,
           country,
@@ -131,11 +116,8 @@ export default function TemplateGrid() {
               `${config.api.baseUrl}/api/client-templates/verify-payment`,
               {
                 razorpayOrderId: paymentResponse.razorpay_order_id,
-
                 razorpayPaymentId: paymentResponse.razorpay_payment_id,
-
                 razorpaySignature: paymentResponse.razorpay_signature,
-
                 templateId: template._id,
               },
               {
@@ -148,8 +130,12 @@ export default function TemplateGrid() {
 
             if (verifyResponse.data.success) {
               alert("Payment Successful");
-
-              window.location.href = "/dashboard";
+              const clientTemplate = verifyResponse.data.data;
+              if (clientTemplate?._id) {
+                router.push(`/dashboard/edit/${clientTemplate._id}`);
+              } else {
+                router.push("/dashboard");
+              }
             }
           } catch (error) {
             console.error(error);
@@ -171,6 +157,22 @@ export default function TemplateGrid() {
 
       alert(error.response?.data?.message || "Unable to initiate payment");
     }
+  }, [country, openAuthModal, router, token, user]);
+
+  useEffect(() => {
+    const pendingTemplate = localStorage.getItem("pendingTemplate");
+
+    if (user && pendingTemplate) {
+      const template = JSON.parse(pendingTemplate);
+
+      localStorage.removeItem("pendingTemplate");
+
+      handlePayment(template);
+    }
+  }, [user, handlePayment]);
+
+  const descriptionText = (template) => {
+    return template.description;
   };
 
   const priceText = (template) => {

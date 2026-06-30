@@ -1,6 +1,6 @@
 "use client";
 export const dynamic = "force-dynamic";
-import {Suspense, useContext, useEffect, useState } from "react";
+import { Suspense, useContext, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
@@ -119,29 +119,25 @@ function PaymentContent() {
 
       if (dummy) {
         // For testing without real Razorpay credentials, create the purchased template directly.
-        // await axios.post(
-        //   `${config.api.baseUrl}${config.api.endpoints.clientTemplates.buy}`,
-        //   { templateId },
-        //   {
-        //     headers: {
-        //       Authorization: `Bearer ${token}`,
-        //     },
-        //   },
-        // );
-        await axios.post(
+        const buyResponse = await axios.post(
           `${config.api.baseUrl}${config.api.endpoints.clientTemplates.buy}`,
           { templateId },
           {
             withCredentials: true,
           },
         );
+        const clientTemplate = buyResponse.data?.data;
         setSuccess(
-          "Payment simulated successfully. Redirecting to your dashboard...",
+          "Payment simulated successfully. Redirecting to your editor...",
         );
-        router.push("/dashboard");
+        if (clientTemplate?._id) {
+          router.push(`/dashboard/edit/${clientTemplate._id}`);
+        } else {
+          router.push("/dashboard");
+        }
         return;
       }
-console.log("Logo URL:", `${window.location.origin}/logo.png`);
+      console.log("Logo URL:", `${window.location.origin}/logo.png`);
       const options = {
         key,
         amount,
@@ -150,7 +146,7 @@ console.log("Logo URL:", `${window.location.origin}/logo.png`);
         // name: `InviteArc - ${template?.title || "Template"}`,
         description: template?.title || "Template purchase",
         image: `${window.location.origin}/logo.png`,
-        
+
         order_id: orderId,
         handler: async function (response) {
           try {
@@ -174,8 +170,13 @@ console.log("Logo URL:", `${window.location.origin}/logo.png`);
               return;
             }
 
-            setSuccess("Payment successful! Redirecting to your dashboard...");
-            router.push("/dashboard");
+            const clientTemplate = verifyResponse.data.data;
+            setSuccess("Payment successful! Redirecting to your editor...");
+            if (clientTemplate?._id) {
+              router.push(`/dashboard/edit/${clientTemplate._id}`);
+            } else {
+              router.push("/dashboard");
+            }
           } catch (verifyError) {
             setError("Payment verification failed. Please contact support.");
           }

@@ -32,7 +32,6 @@ export default function Header() {
     setMenuOpen(false);
     router.push("/");
   };
-
   return (
     <>
       <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur-xl">
@@ -64,7 +63,7 @@ export default function Header() {
               Faqs
             </Link>
             <Link
-              href="#about" 
+              href="#about"
               className="hover:text-slate-900 transition-colors text-[16px] font-semibold text-black font-poppins "
             >
               Blogs
@@ -77,11 +76,14 @@ export default function Header() {
                 <button
                   type="button"
                   onClick={() => setMenuOpen((c) => !c)}
-                  className="flex items-center gap-2 rounded-full bg-[#861E1D] px-6 py-4 text-white shadow-lg transition cursor-pointer hover:bg-slate-800"
+                  className="flex items-center gap-2 rounded-full bg-[#861E1D] px-5 py-4 text-white shadow-lg transition cursor-pointer hover:bg-slate-800"
                   aria-label="Open user menu"
                 >
                   <span className="text-xs font-bold text-slate-100">
-                    {user.name?.charAt(0).toUpperCase() || "U"}
+                    {user.name
+                      ? user.name.trim().slice(0, 2).charAt(0).toUpperCase() +
+                        user.name.trim().slice(1, 2)
+                      : "U"}
                   </span>
                 </button>
                 {menuOpen ? (
@@ -90,6 +92,7 @@ export default function Header() {
                       <p className="font-semibold text-slate-900">
                         {user.name}
                       </p>
+
                       <p className="truncate text-xs text-slate-500">
                         {user.email}
                       </p>
