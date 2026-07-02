@@ -1,4 +1,6 @@
 "use client";
+import { FaWhatsapp } from "react-icons/fa";
+import { SiGoogleforms } from "react-icons/si";
 
 export default function RsvpEditor({
   editorData = {},
@@ -9,87 +11,113 @@ export default function RsvpEditor({
   updateRsvpField,
   formatFieldLabel,
 }) {
+
+  const selectedMode = editorData.rsvpMode || "whatsapp";
+
   return (
     <div className="space-y-6">
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+        <p className="text-sm font-semibold text-slate-800 font-georgia">RSVP option</p>
+
+        <div className="mt-3 grid grid-cols-2 gap-3">
+          <button
+            type="button"
+            onClick={() => updateField("rsvpMode", "whatsapp")}
+            className={`flex flex-col items-start gap-2 rounded-2xl p-4 transition border cursor-pointer ${
+              selectedMode === "whatsapp"
+                ? "border-[#861E1D] bg-[#fff5f5]"
+                : "border-slate-200 bg-white hover:bg-slate-50"
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              <FaWhatsapp />
+
+                <div className="text-sm font-semibold text-slate-900">WhatsApp</div>
+             
+            </div>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => updateField("rsvpMode", "form")}
+            className={`flex flex-col items-start gap-2 rounded-2xl p-4 transition border cursor-pointer ${
+              selectedMode === "form"
+                ? "border-[#861E1D] bg-[#fff5f5]"
+                : "border-slate-200 bg-white hover:bg-slate-50"
+            }`}
+          >
+            <div className="flex items-center gap-3">
+              {/* <svg className="h-6 w-6 text-[#861E1D]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" d="M12 20h9" />
+                <path strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" d="M16 4H8a2 2 0 0 0-2 2v12" />
+              </svg> */}
+              <SiGoogleforms />
+
+              <div>
+                <div className="text-sm font-semibold text-slate-900">Form</div>
+                {/* <div className="text-xs text-slate-500">Redirect guests to a Google Form to RSVP</div> */}
+              </div>
+            </div>
+          </button>
+        </div>
+      </div>
+
       <div>
-        <label className="block text-sm font-semibold text-slate-800">
-          {formatFieldLabel("WhatsApp RSVP number")}
-        </label>
+        <label className="block text-sm font-semibold text-slate-800 font-georgia">Section heading</label>
         <input
-          value={editorData.whatsappNumber || ""}
-          onChange={(event) =>
-            updateField("whatsappNumber", event.target.value)
-          }
-          placeholder="+911234567890"
-          className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-900 focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200"
+          value={editorData.rsvpSectionHeading || ""}
+          onChange={(e) => updateField("rsvpSectionHeading", e.target.value)}
+          placeholder="Looking Forward to Seeing You"
+          className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-900"
         />
       </div>
 
-      <div className="space-y-3 rounded-2xl border border-slate-200 bg-slate-50 p-4">
-        <div className="flex items-center justify-between">
-          <p className="text-sm font-semibold text-slate-800">
-            RSVP form fields
-          </p>
-          <button
-            type="button"
-            onClick={addRsvpField}
-            className="rounded-full border border-slate-300 bg-white px-3 py-1 text-xs font-semibold cursor-pointer text-slate-700 hover:bg-slate-100"
-          >
-            Add field
-          </button>
+      {/* <div>
+        <label className="block text-sm font-semibold text-slate-800 font-georgia">Subtext</label>
+        <textarea
+          value={editorData.rsvpSubtext || ""}
+          onChange={(e) => updateField("rsvpSubtext", e.target.value)}
+          placeholder="Short message shown above the button"
+          rows={4}
+          className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-900"
+        />
+      </div> */}
+
+      {selectedMode === "whatsapp" && (
+        <div>
+          <label className="block text-sm font-semibold text-slate-800 font-georgia">{formatFieldLabel("WhatsApp RSVP number")}</label>
+          <input
+            value={editorData.whatsappNumber || ""}
+            onChange={(event) => updateField("whatsappNumber", event.target.value)}
+            placeholder="+911234567890"
+            className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-900"
+          />
         </div>
-        {rsvpFields.length > 0 ? (
-          rsvpFields.map((field, index) => (
-            <div
-              key={index}
-              className="space-y-2 rounded-2xl border border-slate-200 bg-white p-3"
-            >
-              <div className="flex items-center justify-between gap-3">
-                <span className="text-sm font-semibold text-slate-800">
-                  Field {index + 1}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => removeRsvpField(index)}
-                  className="text-xs font-semibold text-rose-600 hover:text-rose-800 cursor-pointer"
-                >
-                  Remove
-                </button>
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-800">
-                  {formatFieldLabel("Label", field.label)}
-                </label>
-                <input
-                  value={field.label || ""}
-                  onChange={(event) =>
-                    updateRsvpField(index, "label", event.target.value)
-                  }
-                  placeholder="Label"
-                  className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-900 focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-800">
-                  {formatFieldLabel("Type", field.type || "text")}
-                </label>
-                <input
-                  value={field.type || "text"}
-                  onChange={(event) =>
-                    updateRsvpField(index, "type", event.target.value)
-                  }
-                  placeholder="Type (text, email, tel)"
-                  className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-900 focus:border-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-200"
-                />
-              </div>
-            </div>
-          ))
-        ) : (
-          <p className="text-sm text-slate-500">
-            No RSVP form fields added yet.
-          </p>
-        )}
+      )}
+
+      {selectedMode === "form" && (
+        <div>
+          <label className="block text-sm font-semibold text-slate-800 font-georgia">Google form link</label>
+          <input
+            value={editorData.rsvpGoogleFormLink || ""}
+            onChange={(event) => updateField("rsvpGoogleFormLink", event.target.value)}
+            placeholder="Paste your Google Form link here"
+            className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-900"
+          />
+        </div>
+      )}
+
+      <div>
+        <label className="block text-sm font-semibold text-slate-800 font-georgia">Button text</label>
+        <input
+          value={editorData.rsvpButtonText || ""}
+          onChange={(e) => updateField("rsvpButtonText", e.target.value)}
+          placeholder="Yes, I'll be there"
+          className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-900"
+        />
       </div>
+
+      {/* No inline form fields editor — only Google Form link is supported */}
     </div>
   );
 }

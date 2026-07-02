@@ -22,8 +22,8 @@ export default function MusicEditor({
       </div> */}
 
       <div>
-        <label className="block text-sm font-semibold text-slate-800">
-          Upload audio file
+        <label className="block text-sm font-semibold text-slate-800 font-georgia">
+          Upload background song
         </label>
         {/* <input
           type="file"

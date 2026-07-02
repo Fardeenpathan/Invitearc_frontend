@@ -33,7 +33,7 @@ export default function DetailsEditor({
               : rawValue ?? "";
 
           return (
-            <div key={name} className="space-y-3 p-4 flex gap-4">
+            <div key={name} className="space-y-3 py-4 flex gap-4">
               <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#F7EAEA] text-[#861E1D] text-lg">
                 {getFieldIcon(name)}
               </div>

@@ -64,6 +64,9 @@ const initialData = {
   coupleMessageParkingTitle: "Parking",
   coupleMessageParkingDetails: "Valet parking for all our guests will be available at the venue.",
   coupleMessageRouteLink: "https://maps.app.goo.gl/fKxi3eDGsTSd5Aaz6?g_st=ic",
+  rsvpMode: "whatsapp",
+  whatsappNumber: "919876543210",
+  rsvpFields: [],
   noteText: "Note: Themes optional, vibes unmatched",
   events: [
     {

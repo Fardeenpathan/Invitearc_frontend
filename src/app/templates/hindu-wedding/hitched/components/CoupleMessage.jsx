@@ -1,46 +1,63 @@
 "use client";
-
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination, Autoplay } from "swiper/modules";
 import { useState, useEffect } from "react";
-
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
-import {assets} from "../assets";
-
+import { assets } from "../assets";
 export default function CoupleMessage({ data }) {
-const [coupleBg, setCoupleBg] = useState(assets.couple_bgt)
-
+  const [coupleBg, setCoupleBg] = useState(assets.couple_bgt);
   const extractImageSrc = (image) => {
     if (!image) return "";
     if (typeof image === "string") return image;
     return image?.image || image?.src || image?.url || "";
   };
-
-  const carouselImages = Array.isArray(data?.coupleMessageCarouselImages) && data.coupleMessageCarouselImages.length > 0
-    ? data.coupleMessageCarouselImages
-    : [
-        assets.couple1,
-        assets.couple2,
-        assets.couple3,
-        assets.couple4,
-        assets.couple5,
-        assets.couple6,
-        assets.couple7,
-      ];
+  const carouselImages =
+    Array.isArray(data?.coupleMessageCarouselImages) &&
+    data.coupleMessageCarouselImages.length > 0
+      ? data.coupleMessageCarouselImages
+      : [
+          assets.couple1,
+          assets.couple2,
+          assets.couple3,
+          assets.couple4,
+          assets.couple5,
+          assets.couple6,
+          assets.couple7,
+        ];
 
   const coupleTitle = data?.coupleMessageTitle || "A message from the couple";
   const coupleDescription =
     data?.coupleMessageDescription ||
     "From different traditions to one beautiful journey, join us as we celebrate love, laughter, and forever. This moment wouldn’t be the same without the people we love most. Thank you for your love, blessings, and for making our journey even more special, we’re so excited to celebrate together!";
-  const thingsToKnowTitle = data?.coupleMessageThingsToKnowTitle || "Things to know";
+  const thingsToKnowTitle =
+    data?.coupleMessageThingsToKnowTitle || "Things to know";
   const thingsToKnowDescription =
     data?.coupleMessageThingsToKnowDescription ||
     "To help you feel at ease and enjoy every moment of the celebrations, we’ve gathered a few thoughtful details we’d love for you to know before the big day.";
-  const closingTitle = data?.coupleMessageClosingTitle || "Looking Forward to Seeing You";
-  const rsvpText = data?.coupleMessageRsvpText || "Click on the Whatsapp icon to RSVP";
+  const rsvpText =
+    data?.coupleMessageRsvpText || "Click on the Whatsapp icon to RSVP";
+  const rsvpMode = data?.rsvpMode || data?.customData?.rsvpMode || "whatsapp";
+  const whatsappNumber =
+    data?.whatsappNumber || data?.customData?.whatsappNumber || "919876543210";
+  const rsvpFields = Array.isArray(data?.rsvpFields)
+    ? data.rsvpFields
+    : Array.isArray(data?.customData?.rsvpFields)
+      ? data.customData.rsvpFields
+      : [];
+  const whatsappHref = `https://wa.me/${String(whatsappNumber).replace(/\D/g, "")}`;
   const locationTitle = data?.coupleMessageLocationTitle || "Location";
+  const rsvpSectionHeading =
+    data?.rsvpSectionHeading ||
+    data?.customData?.rsvpSectionHeading ||
+    "Looking Forward to Seeing You";
+  const rsvpButtonText =
+    data?.rsvpButtonText ||
+    data?.customData?.rsvpButtonText ||
+    (rsvpMode === "form" ? "Fill RSVP Form" : "Click the Link to RSVP");
+  const rsvpGoogleFormLink =
+    data?.rsvpGoogleFormLink || data?.customData?.rsvpGoogleFormLink || "";
   const locationDetails =
     data?.coupleMessageLocationDetails ||
     "The Central Park Hotel\nBund Garden Road,\nAgarkar Nagar, Pune,\nMaharashtra, 411001";
@@ -52,8 +69,9 @@ const [coupleBg, setCoupleBg] = useState(assets.couple_bgt)
   const parkingDetails =
     data?.coupleMessageParkingDetails ||
     "Valet parking for all our guests will be available at the venue.";
-  const routeLink = data?.coupleMessageRouteLink || "https://maps.app.goo.gl/fKxi3eDGsTSd5Aaz6?g_st=ic";
-
+  const routeLink =
+    data?.coupleMessageRouteLink ||
+    "https://maps.app.goo.gl/fKxi3eDGsTSd5Aaz6?g_st=ic";
 
   useEffect(() => {
     const updateBg = () => {
@@ -75,12 +93,14 @@ const [coupleBg, setCoupleBg] = useState(assets.couple_bgt)
     return () => window.removeEventListener("resize", updateBg);
   }, []);
 
-
   return (
     <>
-      <div className="md:bg-[url('/assets/couple_bgt.png')] bg-[url('/assets/couple_mobilebgn.webp')] bg-cover bg-no-repeat" style={{
+      <div
+        className="md:bg-[url('/assets/couple_bgt.png')] bg-[url('/assets/couple_mobilebgn.webp')] bg-cover bg-no-repeat"
+        style={{
           backgroundImage: `url(${coupleBg})`,
-        }}>
+        }}
+      >
         <div className="lg:h-850 md:h-550 h-610 pt-2 flex flex-col  items-center">
           <h1 className="lg:text-[40px] md:text-3xl text-[32px] text-center text-[#FFF5B9] lg:pt-36 pt-12 font-Cormorant-upright px-6 leading-12">
             {coupleTitle}
@@ -133,9 +153,7 @@ const [coupleBg, setCoupleBg] = useState(assets.couple_bgt)
                   </SwiperSlide>
                 );
               })}
-
             </Swiper>
-            
           </div>
 
           <h1 className=" lg:text-[100px] text-[60px] md:text-3xl text-center text-[#FFF5B9] lg:pt-32 pt-12 font-Cormorant-upright">
@@ -159,12 +177,15 @@ const [coupleBg, setCoupleBg] = useState(assets.couple_bgt)
                   {locationDetails.split("\n")[0]}
                 </span>
                 <p className="md:text-[18px] text-[14px] md:leading-5 text-[#FFF5B9] mt-1 font-cormorant">
-                  {locationDetails.split("\n").slice(1).map((line, index) => (
-                    <span key={`${line}-${index}`}>
-                      {line}
-                      <br />
-                    </span>
-                  ))}
+                  {locationDetails
+                    .split("\n")
+                    .slice(1)
+                    .map((line, index) => (
+                      <span key={`${line}-${index}`}>
+                        {line}
+                        <br />
+                      </span>
+                    ))}
                 </p>
                 <a
                   href={routeLink}
@@ -206,30 +227,51 @@ const [coupleBg, setCoupleBg] = useState(assets.couple_bgt)
           </div>
 
           <div className="flex flex-col justify-center items-center 3xl:mt-0 lg:mt-20 lg:ml-140 ml-34 md:ml-50">
-            <h2 className="lg:text-5xl text-[22px] md:text-[30px] text-center text-[#FFF5B9] lg:pt-63 pt-1 font-Cormorant-upright md:leading-12 leading-6">
-              {closingTitle}
-            </h2>
-            {/* <div className="flex flex-col-1 md:gap-4 gap-2 justify-center items-center md:not-first:mt-4 ">
-              <a href="https://wa.link/5ad8dn" target="_blank">
-                <img src="/assets/whatsapp_n.png" alt="" className="lg:h-10 lg:w-10 h-4 w-4" />
-              </a>
-              <h2 className="lg:text-3xl md:text-xl text-[16px] text-center text-[#FFF5B9]  font-Cormorant-upright">
-                Click on the Whatsapp icon to RSVP
-              </h2>
-            </div> */}
-            <div className="flex md:gap-4 gap-2 justify-center items-start md:items-center md:mt-4">
-              <a href="https://wa.me/919876543210" target="_blank">
-                <img
-                  src={assets.whatsapp}
-                  alt=""
-                  className="lg:h-10 lg:w-10 h-4 w-4 mt-1 md:mt-0"
-                />
-              </a>
+            {rsvpMode === "form" ? (
+              <div className="w-full max-w-xl rounded-3xl px-1 py-4 md:mt-4 flex flex-col items-center text-center">
+                <h3 className="lg:text-5xl text-[22px] md:text-[30px] text-[#FFF5B9] lg:pt-63 pt-1 font-Cormorant-upright md:leading-12 leading-6">
+                  {rsvpSectionHeading}
+                </h3>
+                <a
+                  href={rsvpGoogleFormLink || "#"}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-4"
+                >
+                  <button
+                    type="button"
+                    className="rounded-xl bg-[#FFF5B9] px-8 py-1 text-[20px] font-bold text-[#861E1D] font-Cormorant-upright cursor-pointer"
+                  >
+                    {rsvpButtonText}
+                  </button>
+                </a>
+              </div>
+            ) : (
+              <div className="flex justify-center items-center mt-4">
+                <div className="flex flex-col items-center text-center">
+                  <h3 className="lg:text-5xl text-[22px] md:text-[30px] text-[#FFF5B9] lg:pt-63 pt-1 font-Cormorant-upright md:leading-12 leading-6">
+                    {rsvpSectionHeading}
+                  </h3>
 
-              <h2 className="lg:text-3xl md:text-xl text-[16px] text-[#FFF5B9] font-Cormorant-upright leading-tight">
-                {rsvpText}
-              </h2>
-            </div>
+                  <a
+                    href={whatsappHref}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-3 flex items-center justify-center gap-1 cursor-pointer"
+                  >
+                    <img
+                      src={assets.whatsapp}
+                      alt="WhatsApp"
+                      className="lg:h-10 lg:w-10 h-4 w-4"
+                    />
+
+                    <button className="rounded-full px-4 py-2 text-[30px] font-semibold text-[#FFF5B9] cursor-pointer font-Cormorant-upright">
+                      {rsvpButtonText}
+                    </button>
+                  </a>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

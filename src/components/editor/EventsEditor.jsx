@@ -17,7 +17,7 @@ export default function EventsEditor({
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex justify-between">
-            <h3 className="text-base font-semibold text-slate-900">Events</h3>
+            <h3 className="text-base font-semibold text-slate-900 font-georgia">Events</h3>
            
             <button
               type="button"

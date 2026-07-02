@@ -53,9 +53,6 @@ export default function MarriageCountdown({ data }) {
                     <p className="lg:text-[22px] text-[20px] text-[#FFF5B9] mt-4 text-center lg:px-100 md:px-25 px-10 font-Cormorant-upright">
                         {description}
                     </p>
-                     <p className="lg:text-[22px] text-[20px] text-[#FFF5B9] mt-4 text-center lg:px-100 md:px-25 px-10 font-Cormorant-upright">
-                        With Best Compliments, <br/>Kanta & Kamal,<br/> Kanchan & Sanjay,<br/> Rohit & Harsh
-                    </p>
                 </div>
             </div>
         </>

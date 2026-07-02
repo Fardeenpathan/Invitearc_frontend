@@ -630,7 +630,7 @@ const handleMusicUpload = async (event) => {
                               ? "Configure WhatsApp RSVP or RSVP form fields for guests."
                               : activeTab === "countdown"
                                 ? "Set the countdown title, target date, and description for the marriage countdown section."
-                                : "Add or upload background music for your invitation."}
+                                : "Upload background music for your invitation."}
                     </p>
                   </div>
 
