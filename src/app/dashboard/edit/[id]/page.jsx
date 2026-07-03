@@ -2,10 +2,9 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
+import toast from "react-hot-toast";
 import config from "../../../../config/config";
 import { AuthContext } from "../../../../context/AuthContext";
-import ShareLinkModal from "../../../../components/ShareLinkModal";
-
 import { LuUsers, LuUserRound } from "react-icons/lu";
 import { PiPencilSimpleLineDuotone } from "react-icons/pi";
 import { TfiEmail } from "react-icons/tfi";
@@ -35,10 +34,12 @@ export default function EditTemplatePage() {
   const templateId = params.id;
   const [clientTemplate, setClientTemplate] = useState(null);
   const [editorData, setEditorData] = useState({});
-  const [message, setMessage] = useState("");
   const [saving, setSaving] = useState(false);
   const [publishing, setPublishing] = useState(false);
-  const [shareModalOpen, setShareModalOpen] = useState(false);
+  const [shareSaving, setShareSaving] = useState(false);
+  const [previewUploading, setPreviewUploading] = useState(false);
+  const [sharePrefix, setSharePrefix] = useState("");
+  const [baseUrl, setBaseUrl] = useState("");
   const [view, setView] = useState("desktop");
 
   const previewWidth = {
@@ -70,6 +71,9 @@ export default function EditTemplatePage() {
         );
 
         setClientTemplate(response.data.data);
+        setSharePrefix(
+          response.data.data?.shareSlug?.split("-")?.[0] || ""
+        );
 
         const defaultData = response.data.data?.templateId?.defaultData || {};
         const customData = response.data.data?.customData || {};
@@ -83,7 +87,7 @@ export default function EditTemplatePage() {
         console.log("Data:", error.response?.data);
         console.log("Token:", token);
 
-        setMessage("Unable to load template details.");
+        toast.error("Unable to load template details.");
       }
     };
 
@@ -368,6 +372,65 @@ export default function EditTemplatePage() {
     }));
   };
 
+  const validatePreviewImageFile = (file) => {
+    if (!file) return "No file selected.";
+    if (!file.type.startsWith("image/")) {
+      return "Please upload a valid image file.";
+    }
+    if (file.size > 200 * 1024) {
+      return "Preview image must be below 200KB.";
+    }
+    return null;
+  };
+
+  const getImageDimensions = (file) =>
+    new Promise((resolve, reject) => {
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        resolve({ width: img.naturalWidth, height: img.naturalHeight });
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        reject(new Error("Unable to read image dimensions."));
+      };
+      img.src = url;
+    });
+
+  const handlePreviewImageUpload = async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const error = validatePreviewImageFile(file);
+    if (error) {
+      toast.error(error);
+      return;
+    }
+
+    try {
+      const { width, height } = await getImageDimensions(file);
+      if (width !== 1200 || height !== 600) {
+        toast.error("Preview image must be exactly 1200x600 pixels.");
+        return;
+      }
+
+      setPreviewUploading(true);
+      const imageUrl = await uploadImage(file, "invitearc/preview-images");
+      setEditorData((prev) => ({
+        ...prev,
+        sharePreviewImage: imageUrl,
+      }));
+      toast.success("Preview image uploaded successfully.");
+    } catch (error) {
+      console.error(error);
+      toast.error("Unable to upload preview image. Please try again.");
+    } finally {
+      setPreviewUploading(false);
+      event.target.value = "";
+    }
+  };
+
   const handleCoupleMessageImageUpload = async (event) => {
     const files = Array.from(event.target.files || []);
     if (!files.length) return;
@@ -431,16 +494,15 @@ export default function EditTemplatePage() {
       : 0;
 
     if (totalCarouselImages < 6) {
-      setMessage("Please upload at least 6 couple images.");
+      toast.error("Please upload at least 6 couple images.");
       return;
     }
 
     if (totalCarouselImages > 10) {
-      setMessage("Maximum 10 couple images are allowed.");
+      toast.error("Maximum 10 couple images are allowed.");
       return;
     }
     setSaving(true);
-    setMessage("");
 
     try {
       const response = await axios.put(
@@ -457,10 +519,10 @@ export default function EditTemplatePage() {
       );
 
       setClientTemplate(response.data.data);
-      setMessage("Saved successfully");
+      toast.success("Saved successfully.");
     } catch (error) {
       console.error(error);
-      setMessage("Unable to save changes");
+      toast.error("Unable to save changes.");
     } finally {
       setSaving(false);
     }
@@ -481,17 +543,68 @@ export default function EditTemplatePage() {
         },
       );
       setClientTemplate(response.data.data);
-      setShareModalOpen(true);
-      setMessage("Template published. Share the link with clients.");
+      toast.success("Template published. Share the link with clients.");
     } catch (error) {
-      setMessage("Unable to publish. Please try again.");
+      toast.error("Unable to publish. Please try again.");
     } finally {
       setPublishing(false);
     }
   };
 
+  const saveSharePrefix = async () => {
+    if (!token || !templateId || !sharePrefix) return;
+    setShareSaving(true);
+    try {
+      const response = await axios.put(
+        `${config.api.baseUrl}/api/client-templates/${templateId}/update-share`,
+        { prefix: sharePrefix },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        },
+      );
+      const updatedTemplate = response.data.data;
+      setClientTemplate((prev) => {
+        const previousTemplateId = prev?.templateId;
+        const newTemplateId = updatedTemplate.templateId;
+        const templateIdToUse =
+          newTemplateId && newTemplateId.slug ? newTemplateId : previousTemplateId;
+        return {
+          ...updatedTemplate,
+          templateId: templateIdToUse,
+        };
+      });
+      toast.success("Share link updated successfully.");
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Unable to update share link.",
+      );
+    } finally {
+      setShareSaving(false);
+    }
+  };
+
+  const copyShareLink = async () => {
+    const link = `${baseUrl}/share/${clientTemplate?.shareSlug || ""}`;
+    if (!link) return;
+    try {
+      await navigator.clipboard.writeText(link);
+      toast.success("Share link copied to clipboard.");
+    } catch (error) {
+      toast.error("Unable to copy share link.");
+    }
+  };
+
   const [activeTab, setActiveTab] = useState("details");
   const [selectedEventIndex, setSelectedEventIndex] = useState(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setBaseUrl(window.location.origin);
+    }
+  }, []);
 
   const handleEditFromThumbnail = (index) => {
     setSelectedEventIndex(index);
@@ -528,23 +641,8 @@ export default function EditTemplatePage() {
               >
                 {saving ? "Saving..." : "Save changes"}
               </button>
-
-              <button
-                type="button"
-                onClick={publishTemplate}
-                disabled={publishing}
-                className="inline-flex items-center justify-center rounded-full border cursor-pointer border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-100 disabled:opacity-50"
-              >
-                {publishing ? "Publishing..." : "Publish & Share"}
-              </button>
             </div>
           </div>
-
-          {message && (
-            <div className="rounded-2xl bg-slate-100 px-4 py-3 text-sm text-slate-700">
-              {message}
-            </div>
-          )}
 
           {/* <div className="grid gap-6 lg:grid-cols-[minmax(0,450px)_1fr] md:grid-cols-[minmax(0,350px)_1fr]"> */}
           <div className="grid gap-6 lg:grid-cols-[minmax(350px,400px)_1fr] 3xl:grid-cols-[minmax(450px,500px)_1fr] md:grid-cols-[minmax(300px,400px)_1fr] ">
@@ -568,7 +666,9 @@ export default function EditTemplatePage() {
                               ? "RSVP Details"
                               : activeTab === "countdown"
                                 ? "Countdown Details"
-                                : "Music Details"}
+                                : activeTab === "music"
+                                  ? "Music Details"
+                                  : "Publish & Share"}
                     </p>
 
                     <p className="mt-3 text-sm text-slate-600">
@@ -582,7 +682,9 @@ export default function EditTemplatePage() {
                               ? "Configure WhatsApp RSVP or RSVP form fields for guests."
                               : activeTab === "countdown"
                                 ? "Set the countdown title, target date, and description for the marriage countdown section."
-                                : "Upload background music for your invitation."}
+                                : activeTab === "music"
+                                  ? "Upload background music for your invitation."
+                                  : "Publish your template and update the share link, preview image, title, and description."}
                     </p>
                   </div>
 
@@ -612,6 +714,136 @@ export default function EditTemplatePage() {
                         updateField={updateField}
                         handleMusicUpload={handleMusicUpload}
                       />
+                    )}
+
+                    {activeTab === "publish" && (
+                      <div className="space-y-6">
+                        <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
+                          <h2 className="text-lg font-semibold text-slate-900">
+                            Share link settings
+                          </h2>
+                          <p className="mt-2 text-sm text-slate-600">
+                            Update the editable share link prefix for this template.
+                          </p>
+
+                          <div className="mt-4 grid gap-4 sm:grid-cols-[1fr_auto]">
+                            <input
+                              value={sharePrefix}
+                              onChange={(e) => setSharePrefix(e.target.value)}
+                              placeholder="Enter share prefix"
+                              className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 focus:border-[#861E1D] focus:outline-none focus:ring-2 focus:ring-slate-200"
+                            />
+                            <button
+                              type="button"
+                              onClick={saveSharePrefix}
+                              disabled={shareSaving}
+                              className="inline-flex items-center justify-center rounded-2xl bg-[#861E1D] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#6f191c] disabled:opacity-50"
+                            >
+                              {shareSaving ? "Saving..." : "Save link"}
+                            </button>
+                          </div>
+
+                          <div className="mt-4 rounded-3xl border border-slate-200 bg-white p-4">
+                            <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+                              Share URL preview
+                            </p>
+                            <div className="mt-3 flex flex-col gap-3 text-sm text-slate-700">
+                              <div>
+                                <p className="font-semibold text-slate-900">Full share link</p>
+                                <p className="break-all">{`${baseUrl}/share/${clientTemplate?.shareSlug || ""}`}</p>
+                              </div>
+                              <div className="flex gap-2">
+                                <button
+                                  type="button"
+                                  onClick={copyShareLink}
+                                  className="rounded-2xl border border-slate-200 bg-white px-4 py-2 text-sm text-slate-900 transition hover:bg-slate-100"
+                                >
+                                  Copy link
+                                </button>
+                                <a
+                                  href={`${baseUrl}/share/${clientTemplate?.shareSlug || ""}`}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="rounded-2xl bg-[#861E1D] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#6f191c]"
+                                >
+                                  Open share page
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6">
+                          <div className="grid gap-6 sm:grid-row-[220px_1fr]">
+                            <div className="rounded-3xl overflow-hidden bg-white shadow-sm">
+                              <img
+                                src={editorData?.sharePreviewImage || clientTemplate?.templateId?.previewImage || "/placeholder-template.jpg"}
+                                alt="Preview image"
+                                className="h-full w-full object-cover"
+                              />
+                            </div>
+
+                            <div className="space-y-4">
+                              <div className="space-y-2">
+                                <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+                                  Preview image
+                                </p>
+                                <label className="flex cursor-pointer items-center justify-between rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 transition hover:bg-slate-50">
+                                  <span>{editorData?.sharePreviewImage ? "Change preview image" : "Upload preview image"}</span>
+                                  <span className="text-xs text-slate-500">1200x600px · &lt; 200KB</span>
+                                  <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handlePreviewImageUpload}
+                                    className="hidden"
+                                  />
+                                </label>
+                                {previewUploading && (
+                                  <p className="text-sm text-slate-500">Uploading preview image...</p>
+                                )}
+                              </div>
+                              <div className="space-y-2">
+                                <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+                                  Preview title
+                                </p>
+                                <input
+                                  value={editorData?.sharePreviewTitle || clientTemplate?.templateId?.title || editorData?.headline || "Invitation Preview"}
+                                  onChange={(e) => updateField("sharePreviewTitle", e.target.value)}
+                                  placeholder="Enter preview title"
+                                  className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 focus:border-[#861E1D] focus:outline-none focus:ring-2 focus:ring-slate-200"
+                                />
+                              </div>
+                              <div className="space-y-2">
+                                <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+                                  Preview description
+                                </p>
+                                <textarea
+                                  value={editorData?.sharePreviewDescription || editorData?.inviteLine || editorData?.eventIntro || clientTemplate?.templateId?.category || "A custom invitation preview description for this template."}
+                                  onChange={(e) => updateField("sharePreviewDescription", e.target.value)}
+                                  placeholder="Enter preview description"
+                                  rows={4}
+                                  className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 focus:border-[#861E1D] focus:outline-none focus:ring-2 focus:ring-slate-200"
+                                />
+                              </div>
+                              <div className="flex flex-wrap gap-2">
+                                <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs uppercase tracking-[0.2em] text-slate-600">
+                                  {clientTemplate?.isPublished ? "Published" : "Draft"}
+                                </span>
+                                {!clientTemplate?.isPublished && (
+                                  <button
+                                    type="button"
+                                    onClick={publishTemplate}
+                                    disabled={publishing}
+                                    className="rounded-2xl bg-[#861E1D] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#6f191c] disabled:opacity-50"
+                                  >
+                                    {publishing ? "Publishing..." : "Publish now"}
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     )}
                   </div>
 
@@ -729,13 +961,6 @@ export default function EditTemplatePage() {
           </div>
         </div>
       </section>
-
-      <ShareLinkModal
-        open={shareModalOpen}
-        onClose={() => setShareModalOpen(false)}
-        clientTemplate={clientTemplate}
-        token={token}
-      />
     </main>
   );
 }

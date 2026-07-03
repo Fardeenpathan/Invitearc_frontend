@@ -463,10 +463,6 @@ export default function Home({
         )}
 
 
-
-
-        {/* Decorative Lamps - Natural Flow Pattern */}
-        {/* Left-to-Right Lamps - Less crowded */}
         <FloatingLamp className="hidden lg:block absolute top-10 left-8 w-18 h-18 transform rotate-12 opacity-90" />
         <FloatingLamp className="hidden lg:block absolute top-30 left-20 w-16 h-16 transform rotate-45 opacity-80" />
         <FloatingLamp className="hidden lg:block absolute top-50 left-40 w-20 h-20 transform rotate-30 opacity-85" />

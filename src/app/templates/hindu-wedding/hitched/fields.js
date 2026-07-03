@@ -5,6 +5,7 @@ import {
   FaStopwatch,
 } from "react-icons/fa";
 import { GiLoveSong } from "react-icons/gi";
+import { AiOutlineShareAlt } from "react-icons/ai";
 
 export const hitchedEditorFields = {
   tabs: [
@@ -37,6 +38,11 @@ export const hitchedEditorFields = {
       id: "music",
       label: "Music",
       icon: GiLoveSong,
+    },
+    {
+      id: "publish",
+      label: "Publish",
+      icon: AiOutlineShareAlt,
     },
   ],
 detailFields: [
