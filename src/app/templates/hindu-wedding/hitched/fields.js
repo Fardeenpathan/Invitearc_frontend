@@ -67,4 +67,22 @@ detailFields: [
     { name: "link", label: "Route link", type: "text" },
   ],
 
+  publishFields: [
+    {
+      name: "sharePreviewImage",
+      label: "Preview Image",
+      type: "image",
+    },
+    {
+      name: "sharePreviewTitle",
+      label: "Preview Title",
+      type: "text",
+    },
+    {
+      name: "sharePreviewDescription",
+      label: "Preview Description",
+      type: "textarea",
+    },
+  ],
+
 };

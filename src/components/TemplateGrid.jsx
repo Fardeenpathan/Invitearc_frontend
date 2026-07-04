@@ -221,14 +221,22 @@ export default function TemplateGrid() {
                   {template.isBuiltIn ? (
                     <div className="h-48 w-full flex items-center justify-center bg-linear-to-br from-purple-200 via-pink-200 to-blue-200">
                       <img
-                        src={previewImages[template.slug]}
+                        src={
+                          template.previewImage ||
+                          template.defaultData?.sharePreviewImage ||
+                          previewImages[template.slug]
+                        }
                         alt={template.title}
                         className="h-full w-full object-cover"
                       />
                     </div>
                   ) : (
                     <img
-                      src={template.previewImage}
+                      src={
+                        template.previewImage ||
+                        template.defaultData?.sharePreviewImage ||
+                        "/placeholder-template.jpg"
+                      }
                       alt={template.title || "Template preview"}
                       className="h-full w-full object-cover "
                     />

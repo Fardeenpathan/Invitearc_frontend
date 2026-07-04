@@ -92,9 +92,10 @@ export default function DashboardPage() {
                 key={clientTemplate._id}
                 className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
               >
-                <div className="overflow-hidden rounded-3xl bg-slate-100">
+                  <div className="overflow-hidden rounded-3xl bg-slate-100">
                   <img
                     src={
+                      clientTemplate?.customData?.sharePreviewImage ||
                       clientTemplate.templateId?.previewImage ||
                       "/placeholder-template.jpg"
                     }

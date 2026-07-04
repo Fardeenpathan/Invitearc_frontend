@@ -54,7 +54,47 @@ export default function EventsEditor({
                 Close
               </button>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2">
+
+            <div className="space-y-4 sm:flex sm:items-start sm:justify-between sm:gap-4">
+              <div className="flex-1 rounded-3xl border border-slate-200 bg-slate-50 p-3">
+                {editorData.events[selectedEventIndex].image ? (
+                  <img
+                    src={editorData.events[selectedEventIndex].image}
+                    alt={`Event ${selectedEventIndex + 1} preview`}
+                    className="h-40 w-full rounded-3xl object-cover"
+                  />
+                ) : (
+                  <div className="flex h-40 items-center justify-center rounded-3xl border border-dashed border-slate-300 bg-white text-center text-sm text-slate-500">
+                    No event image uploaded yet.
+                  </div>
+                )}
+              </div>
+
+              <div className="flex flex-col items-start gap-3 sm:w-72">
+                <label className="inline-flex cursor-pointer items-center justify-between rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-50 w-full">
+                  <span>
+                    {editorData.events[selectedEventIndex].image
+                      ? "Change event image"
+                      : "Upload event image"}
+                  </span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleEventImageUpload(selectedEventIndex, e)}
+                    className="hidden"
+                  />
+                </label>
+                {editorData.events[selectedEventIndex].imageFileName ? (
+                  <p className="text-xs text-slate-500">
+                    {editorData.events[selectedEventIndex].imageFileName}
+                  </p>
+                ) : editorData.events[selectedEventIndex].image ? (
+                  <p className="text-xs text-slate-500">Image selected</p>
+                ) : null}
+              </div>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2 mt-4">
               {(eventFields.length > 0
                 ? eventFields
                 : Object.keys(editorData.events[selectedEventIndex] || {}).map(
@@ -148,6 +188,13 @@ export default function EventsEditor({
                     </p>
                   </div>
                   <div className="flex flex-col items-end gap-2 text-right">
+                    <button
+                      type="button"
+                      onClick={() => handleEditFromThumbnail(index)}
+                      className="inline-flex h-8 items-center justify-center rounded-full border border-slate-300 bg-white px-3 text-xs font-semibold text-slate-700 hover:bg-slate-100"
+                    >
+                      Edit
+                    </button>
                     <button
                       type="button"
                       onClick={() => removeEventItem(index)}

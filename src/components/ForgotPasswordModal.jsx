@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import config from "../config/config"
 
 export default function ForgotPasswordModal({ open, onClose }) {
   const [email, setEmail] = useState("");
@@ -22,7 +23,8 @@ export default function ForgotPasswordModal({ open, onClose }) {
       setError("");
 
       const response = await fetch(
-        "http://localhost:5000/api/auth/forgot-password",
+        `${config.api.baseUrl}/api/auth/forgot-password`,
+       
         {
           method: "POST",
           headers: {
@@ -53,7 +55,8 @@ export default function ForgotPasswordModal({ open, onClose }) {
       setError("");
 
       const response = await fetch(
-        "http://localhost:5000/api/auth/verify-otp",
+        `${config.api.baseUrl}/api/auth/verify-otp`,
+        // "http://localhost:5000/api/auth/verify-otp",
         {
           method: "POST",
           headers: {
@@ -92,7 +95,8 @@ export default function ForgotPasswordModal({ open, onClose }) {
       }
 
       const response = await fetch(
-        "http://localhost:5000/api/auth/reset-password",
+         `${config.api.baseUrl}/api/auth/reset-password`,
+        // "http://localhost:5000/api/auth/reset-password",
         {
           method: "POST",
           headers: {
