@@ -42,7 +42,6 @@ export default function EditTemplatePage() {
   const [baseUrl, setBaseUrl] = useState("");
   const [view, setView] = useState("desktop");
 
-
   useEffect(() => {
     if (!loading && !user) {
       router.push(`/login?redirect=/dashboard/edit/${templateId}`);
@@ -167,14 +166,6 @@ export default function EditTemplatePage() {
     groomDetails: <LuUserRound />,
     brideDetails: <LuUserRound />,
     brideGrandParents: <LuUserRound />,
-    // whatsappNumber: "📱",
-    // title_ceremony: "🎊",
-    // date: "📅",
-    // venue: "📍",
-    // venue_address: "📌",
-    // time: "⏰",
-    // theme: "✨",
-    // link: "🔗",
   };
 
   const getFieldIcon = (name) => fieldIcons[name] || "✎";
@@ -454,7 +445,6 @@ export default function EditTemplatePage() {
         ],
       }));
 
-      // Same files dubara select karne ke liye
       event.target.value = "";
     } catch (error) {
       console.error("Failed to upload couple message image files:", error);
@@ -798,6 +788,7 @@ export default function EditTemplatePage() {
                   </div>
                 </div>
 
+                
                 <div
                   className="mx-auto overflow-hidden rounded-4xl bg-white shadow-xl border-[6px] transition-all mt-6"
                   style={{
