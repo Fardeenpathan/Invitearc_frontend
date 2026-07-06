@@ -632,7 +632,7 @@ export default function EditTemplatePage() {
           </div>
 
           {/* <div className="grid gap-6 lg:grid-cols-[minmax(0,450px)_1fr] md:grid-cols-[minmax(0,350px)_1fr]"> */}
-          <div className="grid gap-6 lg:grid-cols-[minmax(350px,400px)_1fr] 3xl:grid-cols-[minmax(450px,500px)_1fr] md:grid-cols-[minmax(300px,400px)_1fr] ">
+          <div className="grid gap-6 lg:grid-cols-[minmax(350px,400px)_1fr] 3xl:grid-cols-[minmax(450px,500px)_1fr]  ">
             <aside className="rounded-3xl border border-slate-200 bg-white shadow-sm overflow-hidden">
               <div className="flex min-h-full">
                 <Sidebar
