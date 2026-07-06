@@ -10,15 +10,49 @@ import React, {
 import axios from "axios";
 import config from "../config/config";
 
+const getInitialUser = () => {
+  if (typeof window === "undefined") return null;
+  try {
+    return JSON.parse(localStorage.getItem("user"));
+  } catch {
+    return null;
+  }
+};
+
+const getInitialToken = () => {
+  if (typeof window === "undefined") return null;
+  return localStorage.getItem("accessToken");
+};
+
+axios.defaults.withCredentials = true;
+
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(getInitialUser);
   const [loading, setLoading] = useState(true);
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(getInitialToken);
   const [authSuccessCallback, setAuthSuccessCallback] = useState(null);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authTab, setAuthTab] = useState("login");
+
+  useEffect(() => {
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      localStorage.setItem("accessToken", token);
+    } else {
+      delete axios.defaults.headers.common["Authorization"];
+      localStorage.removeItem("accessToken");
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("user");
+    }
+  }, [user]);
 
   const openAuthModal = (tab = "login") => {
     setAuthTab(tab);
@@ -44,6 +78,7 @@ export const AuthProvider = ({ children }) => {
       if (refreshRes.data.success) {
         const token = refreshRes.data.accessToken;
         setToken(token);
+        localStorage.setItem("accessToken", token);
         // Set the new access token in common headers
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
@@ -53,11 +88,25 @@ export const AuthProvider = ({ children }) => {
         );
         if (userRes.data.success) {
           setUser(userRes.data.user);
+          localStorage.setItem("user", JSON.stringify(userRes.data.user));
+        }
+      } else {
+        const storedUser = getInitialUser();
+        if (storedUser) {
+          setUser(storedUser);
         }
       }
     } catch (error) {
-      // If refresh fails, user is not logged in or session expired
-      setUser(null);
+      const storedUser = getInitialUser();
+      const storedToken = getInitialToken();
+      if (storedUser && storedToken) {
+        setUser(storedUser);
+        setToken(storedToken);
+        axios.defaults.headers.common["Authorization"] = `Bearer ${storedToken}`;
+      } else {
+        setUser(null);
+        setToken(null);
+      }
     } finally {
       setLoading(false);
     }
@@ -128,6 +177,7 @@ useEffect(() => {
       const res = await axios.post(
         `${config.api.baseUrl}${config.api.endpoints.auth.login}`,
         { email, password },
+        { withCredentials: true },
       );
       if (res.data.success) {
         setUser(res.data.user);
@@ -149,6 +199,7 @@ useEffect(() => {
       const res = await axios.post(
         `${config.api.baseUrl}${config.api.endpoints.auth.register}`,
         { name, email, mobileNumber, password },
+        { withCredentials: true },
       );
       if (res.data.success) {
         setUser(res.data.user);
@@ -169,6 +220,8 @@ useEffect(() => {
     try {
       await axios.post(
         `${config.api.baseUrl}${config.api.endpoints.auth.logout}`,
+        {},
+        { withCredentials: true },
       );
       setUser(null);
       setToken(null);
