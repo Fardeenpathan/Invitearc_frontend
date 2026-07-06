@@ -65,6 +65,62 @@ export const AuthProvider = ({ children }) => {
     checkAuth();
   }, [checkAuth]);
 
+
+useEffect(() => {
+  const interceptor = axios.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+      const originalRequest = error.config;
+
+      if (
+        error.response?.status === 401 &&
+        !originalRequest._retry &&
+        token &&
+        !originalRequest.url.includes(config.api.endpoints.auth.refresh)
+      ) {
+        originalRequest._retry = true;
+
+        try {
+          const refreshRes = await axios.post(
+            `${config.api.baseUrl}${config.api.endpoints.auth.refresh}`,
+            {},
+            { withCredentials: true }
+          );
+
+          const newAccessToken = refreshRes.data.accessToken;
+
+          setToken(newAccessToken);
+
+          axios.defaults.headers.common["Authorization"] =
+            `Bearer ${newAccessToken}`;
+
+          // originalRequest.headers["Authorization"] =
+          //   `Bearer ${newAccessToken}`;
+
+          originalRequest.headers = {
+  ...originalRequest.headers,
+  Authorization: `Bearer ${newAccessToken}`,
+};
+
+          return axios(originalRequest);
+        } catch (err) {
+          setUser(null);
+          setToken(null);
+          delete axios.defaults.headers.common["Authorization"];
+          return Promise.reject(err);
+        }
+      }
+
+      return Promise.reject(error);
+    }
+  );
+
+  return () => {
+    axios.interceptors.response.eject(interceptor);
+  };
+}, [token]);
+
+
   const login = async (email, password) => {
     try {
       const res = await axios.post(
