@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -30,7 +30,7 @@ export default function EditTemplatePage() {
   const { user, token, loading } = useContext(AuthContext);
   const params = useParams();
   const router = useRouter();
-
+  const iframeRef = useRef(null);
   const templateId = params.id;
   const [clientTemplate, setClientTemplate] = useState(null);
   const [editorData, setEditorData] = useState({});
@@ -47,11 +47,41 @@ export default function EditTemplatePage() {
     return "desktop";
   });
 
+  const deviceConfig = {
+    mobile: {
+      width: 390,
+      scale: 1,
+    },
+    tablet: {
+      width: 768,
+      scale: 0.78,
+    },
+    desktop: {
+      width: 1440,
+      scale:
+        typeof window !== "undefined" && window.innerWidth >= 1600
+          ? 0.78
+          : 0.62,
+    },
+  };
+
   useEffect(() => {
     if (!loading && !user) {
       router.push(`/login?redirect=/dashboard/edit/${templateId}`);
     }
   }, [loading, user, router, templateId]);
+
+  useEffect(() => {
+    if (!iframeRef.current) return;
+
+    iframeRef.current.contentWindow?.postMessage(
+      {
+        type: "EDITOR_UPDATE",
+        data: editorData,
+      },
+      window.location.origin,
+    );
+  }, [editorData]);
 
   useEffect(() => {
     if (loading) return;
@@ -339,7 +369,7 @@ export default function EditTemplatePage() {
       const musicUrl = await uploadFile(
         file,
         "invitearc/music",
-        "video", // Cloudinary me audio = video resource type
+        "video", 
       );
 
       setEditorData((prev) => ({
@@ -450,7 +480,6 @@ export default function EditTemplatePage() {
         ],
       }));
 
-      // Same files dubara select karne ke liye
       event.target.value = "";
     } catch (error) {
       console.error("Failed to upload couple message image files:", error);
@@ -631,7 +660,6 @@ export default function EditTemplatePage() {
             </div>
           </div>
 
-          {/* <div className="grid gap-6 lg:grid-cols-[minmax(0,450px)_1fr] md:grid-cols-[minmax(0,350px)_1fr]"> */}
           <div className="grid gap-6 lg:grid-cols-[minmax(350px,400px)_1fr] 3xl:grid-cols-[minmax(450px,500px)_1fr]  ">
             <aside className="rounded-3xl border border-slate-200 bg-white shadow-sm overflow-hidden">
               <div className="flex min-h-full">
@@ -818,27 +846,21 @@ export default function EditTemplatePage() {
                   width: "100%",
                   maxWidth:
                     view === "mobile"
-                      ? "360px"
+                      ? "393px"
                       : view === "tablet"
-                        ? "768px"
-                        : typeof window !== "undefined" && window.innerWidth >= 1600
-                          ? "1200px"
+                        ? "820px"
+                        : typeof window !== "undefined" &&
+                            window.innerWidth >= 1600
+                          ? "1300px"
                           : "950px",
                 }}
               >
                 <div className="h-200 overflow-y-auto overflow-x-hidden bg-slate-100">
-                  {TemplateComponent ? (
-                    <TemplateComponent
-                      data={editorData}
-                      token={token}
-                      templateId={templateId}
-                      isOwner={true}
-                    />
-                  ) : (
-                    <div className="p-10 text-center text-slate-600">
-                      Template preview not available.
-                    </div>
-                  )}
+                  <iframe
+                    ref={iframeRef}
+                    src={`/preview/${templateId}`}
+                    className="w-full h-full border-0 bg-white"
+                  />
                 </div>
               </div>
             </section>
