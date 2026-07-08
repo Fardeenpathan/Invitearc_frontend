@@ -743,7 +743,7 @@ export default function Home({
   {/* Left Side Text */}
   <div className="absolute inset-0 flex items-center text-left lg:ml-0 3xl:ml-50 ml-4 ">
     <div className="lg:pl-24 md:pl-14 pl-0">
-      <h1 className="lg:text-8xl md:text-5xl text-[26px] text-[#E1EF1E] font-parisienne lg:pb-10 md:pb-8 pb-4">
+      <h1 className="lg:text-7xl md:text-5xl text-[26px] text-[#E1EF1E] font-parisienne lg:pb-10 md:pb-8 pb-4">
         With Love From Us
       </h1>
 

@@ -24,13 +24,13 @@ export default function RsvpEditor({
           <button
             type="button"
             onClick={() => updateField("rsvpMode", "whatsapp")}
-            className={`flex flex-col items-start gap-2 rounded-2xl px-4 py-3 transition border cursor-pointer ${
+            className={`flex flex-col items-start gap-2 rounded-2xl px-2 py-3 transition border cursor-pointer ${
               selectedMode === "whatsapp"
                 ? "border-[#861E1D] bg-[#fff5f5]"
                 : "border-slate-200 bg-white hover:bg-slate-50"
             }`}
           >
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1">
               <FaWhatsapp />
 
               <div className="text-sm font-semibold text-slate-900">
