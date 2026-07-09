@@ -6,6 +6,7 @@ import axios from "axios";
 import config from "../../config/config";
 import { AuthContext } from "../../context/AuthContext";
 import ShareLinkModal from "../../components/ShareLinkModal";
+import { assets } from "../templates/hindu-wedding/hitched/assets";
 
 export default function DashboardPage() {
   const { user, token, loading } = useContext(AuthContext);
@@ -93,7 +94,7 @@ export default function DashboardPage() {
               >
                   <div className="overflow-hidden rounded-3xl bg-slate-100">
                   <img
-                     src="https://res.cloudinary.com/drl4fmhrq/image/upload/v1783502647/2_1_1_cgn4kz.png"
+                    src={assets.hitched_pre}
                     alt={
                       clientTemplate.templateId?.title ||
                       "Purchased template preview"

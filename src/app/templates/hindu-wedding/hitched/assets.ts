@@ -22,6 +22,7 @@ import back_bottom from "./assets/back_bottom.png";
 import couple_bg from "./assets/couple_bg.png";
 import countdown_desktop_bg from "./assets/countdown_desktop_bg.png";
 import countdown_mobile_bg from "./assets/countdown_mobile_bg.jpg";
+import hitched_pre from "./assets/hitched_pre.png";
 export const assets = {
   lamp: lamp.src,
   Rohit_mobilebgn: Rohit_mobilebgn.src,
@@ -48,5 +49,6 @@ export const assets = {
   background_song: "/template-audio/hitched.mp3",
   couple_bg: couple_bg.src,
 countdown_desktop_bg: countdown_desktop_bg.src,
-countdown_mobile_bg: countdown_mobile_bg.src
+countdown_mobile_bg: countdown_mobile_bg.src,
+hitched_pre:hitched_pre.src,
 };
