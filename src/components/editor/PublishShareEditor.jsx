@@ -27,7 +27,7 @@ export default function PublishShareEditor({
           Update the editable share link prefix for this template.
         </p>
 
-        <div className="mt-4 grid gap-4 sm:grid-cols-[1fr_auto]">
+        <div className="mt-4 grid md:gap-2 gap-4 sm:grid-cols-[1fr_auto]">
           <input
             value={sharePrefix}
             onChange={(e) => setSharePrefix(e.target.value)}
@@ -53,7 +53,7 @@ export default function PublishShareEditor({
               <p className="font-semibold text-slate-900 font-georgia">Full share link</p>
               <p className="break-all">{shareUrl}</p>
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-col  gap-4 md:gap-2">
               <button
                 type="button"
                 onClick={copyShareLink}
@@ -65,7 +65,7 @@ export default function PublishShareEditor({
                 href={shareUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-2xl bg-[#861E1D] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#6f191c]"
+                className="rounded-2xl bg-[#861E1D] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#6f191c] text-center"
               >
                 Open share page
               </a>

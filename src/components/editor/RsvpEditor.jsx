@@ -14,16 +14,17 @@ export default function RsvpEditor({
   const selectedMode = editorData.rsvpMode || "whatsapp";
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
+      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 md:p-3">
         <p className="text-sm font-semibold text-slate-800 font-georgia">
           RSVP option
         </p>
 
-        <div className="mt-3 grid grid-cols-2 gap-3">
+        {/* <div className="mt-3 grid grid-cols-2 gap-3"> */}
+          <div className="flex flex-col md:flex-row gap-3 md:gap-3 md:mt-2 mt-4">
           <button
             type="button"
             onClick={() => updateField("rsvpMode", "whatsapp")}
-            className={`flex flex-col items-start gap-2 rounded-2xl px-2 py-3 transition border cursor-pointer ${
+            className={`flex flex-col items-center gap-2 rounded-2xl px-3 py-3 transition border cursor-pointer ${
               selectedMode === "whatsapp"
                 ? "border-[#861E1D] bg-[#fff5f5]"
                 : "border-slate-200 bg-white hover:bg-slate-50"
@@ -41,7 +42,7 @@ export default function RsvpEditor({
           <button
             type="button"
             onClick={() => updateField("rsvpMode", "form")}
-            className={`flex flex-col items-center gap-2 rounded-2xl px-4 py-3 transition border cursor-pointer ${
+            className={`flex flex-col items-center gap-2 rounded-2xl px-5 py-3 transition border cursor-pointer ${
               selectedMode === "form"
                 ? "border-[#861E1D] bg-[#fff5f5]"
                 : "border-slate-200 bg-white hover:bg-slate-50"
@@ -49,10 +50,8 @@ export default function RsvpEditor({
           >
             <div className="flex items-center gap-3">
               <SiGoogleforms />
-
               <div>
-                <div className="text-sm font-semibold text-slate-900">Form</div>
-               
+                <div className="text-sm font-semibold text-slate-900">Form</div> 
               </div>
             </div>
           </button>
