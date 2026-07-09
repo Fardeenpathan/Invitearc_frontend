@@ -242,13 +242,13 @@ export default function EditTemplatePage() {
         ...(Array.isArray(prev.events) ? prev.events : []),
         {
           title_ceremony: "New Event",
-          date: "",
-          venue: "",
-          venue_address: "",
-          time: "",
-          theme: "",
-          link: "",
-          image: "",
+          date: "Saturday, 10th December 2026",
+          venue: "Royal Palace",
+          venue_address: "Bund Garden Road, Agarkar Nagar Pune, Maharashtra, 411001",
+          time: "6pm Onwards",
+          theme: "Pretty in Pink: Florals, Pastels & Pink Hues Royal Palace",
+          link: "https://maps.app.goo.gl/4GdkKFJfvdJCszja9",
+          image: "https://res.cloudinary.com/drl4fmhrq/image/upload/v1783490546/Group_2147225087_hyxljf.png",
         },
       ],
     }));
@@ -387,16 +387,31 @@ export default function EditTemplatePage() {
     }));
   };
 
-  const validatePreviewImageFile = (file) => {
-    if (!file) return "No file selected.";
-    if (!file.type.startsWith("image/")) {
-      return "Please upload a valid image file.";
+const validatePreviewImageFile = async (file) => {
+  if (!file) {
+    return "No file selected.";
+  }
+
+  if (!file.type.startsWith("image/")) {
+    return "Please upload a valid image file.";
+  }
+
+  if (file.size > 200 * 1024) {
+    return "Preview image must be below 200 KB.";
+  }
+
+  try {
+    const { width, height } = await getImageDimensions(file);
+
+    if (width !== 1200 || height !== 630) {
+      return "Preview image must be exactly 1200 × 630 pixels.";
     }
-    if (file.size > 200 * 1024) {
-      return "Preview image must be below 200KB.";
-    }
-    return null;
-  };
+  } catch (error) {
+    return "Unable to validate image dimensions.";
+  }
+
+  return null;
+};
 
   const getImageDimensions = (file) =>
     new Promise((resolve, reject) => {
@@ -413,34 +428,70 @@ export default function EditTemplatePage() {
       img.src = url;
     });
 
-  const handlePreviewImageUpload = async (event) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
+  // const handlePreviewImageUpload = async (event) => {
+  //   const file = event.target.files?.[0];
+  //   if (!file) return;
 
-    const error = validatePreviewImageFile(file);
-    if (error) {
-      toast.error(error);
-      return;
-    }
+  //   const error = validatePreviewImageFile(file);
+  //   if (error) {
+  //     toast.error(error);
+  //     return;
+  //   }
 
-    try {
-      setPreviewUploading(true);
-      const imageUrl = await uploadImage(file, "invitearc/preview-images");
-      setEditorData((prev) => ({
-        ...prev,
-        sharePreviewImage: imageUrl,
-      }));
-      toast.success(
-        "Preview image uploaded successfully. Save changes to persist.",
-      );
-    } catch (error) {
-      console.error(error);
-      toast.error("Unable to upload preview image. Please try again.");
-    } finally {
-      setPreviewUploading(false);
-      event.target.value = "";
-    }
-  };
+  //   try {
+  //     setPreviewUploading(true);
+  //     const imageUrl = await uploadImage(file, "invitearc/preview-images");
+  //     setEditorData((prev) => ({
+  //       ...prev,
+  //       sharePreviewImage: imageUrl,
+  //     }));
+  //     toast.success(
+  //       "Preview image uploaded successfully. Save changes to persist.",
+  //     );
+  //   } catch (error) {
+  //     console.error(error);
+  //     toast.error("Unable to upload preview image. Please try again.");
+  //   } finally {
+  //     setPreviewUploading(false);
+  //     event.target.value = "";
+  //   }
+  // };
+
+
+const handlePreviewImageUpload = async (event) => {
+  const file = event.target.files?.[0];
+  if (!file) return;
+
+  const error = await validatePreviewImageFile(file);
+
+  if (error) {
+    toast.error(error);
+    event.target.value = "";
+    return;
+  }
+
+  try {
+    setPreviewUploading(true);
+
+    const imageUrl = await uploadImage(file, "invitearc/preview-images");
+
+    setEditorData((prev) => ({
+      ...prev,
+      sharePreviewImage: imageUrl,
+    }));
+
+    toast.success(
+      "Preview image uploaded successfully."
+    );
+  } catch (error) {
+    console.error(error);
+    toast.error("Unable to upload preview image. Please try again.");
+  } finally {
+    setPreviewUploading(false);
+    event.target.value = "";
+  }
+};
+
 
   const handleCoupleMessageImageUpload = async (event) => {
     const files = Array.from(event.target.files || []);

@@ -34,7 +34,7 @@ export const assets = {
   image2: Image2.src,
   image3: Image3.src,
   image4: Image4.src,
-   image5: Image5.src,
+  image5: Image5.src,
   // couple6: couple6.src,
   moon_mobile2: moon_mobile2.src,
   moon: moon.src,

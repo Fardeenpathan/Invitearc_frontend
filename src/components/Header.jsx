@@ -104,13 +104,16 @@ export default function Header() {
                     >
                       Dashboard
                     </Link>
+                    
                     <button
+                    href="/"
                       type="button"
                       onClick={handleLogout}
                       className="mt-2 w-full rounded-3xl bg-[#861E1D] px-4 py-3 text-sm font-semibold text-white transition hover:bg-slate-700 cursor-pointer"
                     >
                       Logout
                     </button>
+                   
                   </div>
                 ) : null}
               </div>

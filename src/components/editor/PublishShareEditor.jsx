@@ -130,9 +130,7 @@ export default function PublishShareEditor({
                     ? "Change preview image"
                     : "Upload preview image"}
                 </span>
-                <span className="text-xs text-slate-500">
-                  1200x600px · &lt; 200KB
-                </span>
+                
                 <input
                   type="file"
                   accept="image/*"
@@ -140,6 +138,9 @@ export default function PublishShareEditor({
                   className="hidden"
                 />
               </label>
+              <span className="text-xs text-slate-500">
+                  1200x600px and below 200KB
+                </span>
               {previewUploading && (
                 <p className="text-sm text-slate-500">
                   Uploading preview image...

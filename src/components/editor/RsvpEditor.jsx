@@ -107,7 +107,7 @@ export default function RsvpEditor({
           <input
             value={editorData.rsvpGoogleFormLink || ""}
             onChange={(event) =>
-              updateField("rsvpGoogleFormLink", event.target.value)
+              updateField(" ", event.target.value)
             }
             placeholder="Paste your Google Form link here"
             className="mt-2 w-full rounded-2xl border border-slate-200 bg-slate-50 p-3 text-sm text-slate-900"
