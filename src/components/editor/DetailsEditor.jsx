@@ -6,7 +6,7 @@ export default function DetailsEditor({
   getFieldIcon,
 }) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-1">
       {detailFields.length > 0 ? (
         detailFields.map((field) => {
           const name = field.name || field;
@@ -33,7 +33,7 @@ export default function DetailsEditor({
               : rawValue ?? "";
 
           return (
-            <div key={name} className="space-y-3 py-4 flex gap-4">
+            <div key={name} className="space-y-4 py-2 flex gap-4">
               <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#F7EAEA] text-[#861E1D] text-lg">
                 {getFieldIcon(name)}
               </div>
