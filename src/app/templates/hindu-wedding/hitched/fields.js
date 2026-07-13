@@ -5,7 +5,7 @@ import {
   FaStopwatch,
 } from "react-icons/fa";
 import { GiLoveSong } from "react-icons/gi";
-import { AiOutlineShareAlt } from "react-icons/ai";
+import { AiOutlineShareAlt } from "react-icons/ai"; 
 
 export const hitchedEditorFields = {
   tabs: [

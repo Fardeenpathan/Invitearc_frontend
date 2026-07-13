@@ -50,5 +50,5 @@ export const assets = {
   couple_bg: couple_bg.src,
 countdown_desktop_bg: countdown_desktop_bg.src,
 countdown_mobile_bg: countdown_mobile_bg.src,
-hitched_pre:hitched_pre.src,
+hitched_pre:hitched_pre.src, 
 };

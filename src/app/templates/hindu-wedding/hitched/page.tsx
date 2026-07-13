@@ -265,13 +265,13 @@ export default function Home({
           backgroundImage: `url(${bgImage})`,
         }}
       >
-        {isOwner && (
+        {/* {isOwner && (
           <></>
-        )}
+        )} */}
         {editMode && (
           <div className="fixed inset-0 z-50 overflow-auto bg-black/40 p-4">
             <div className="mx-auto w-full max-w-4xl rounded-3xl bg-white p-6 shadow-2xl">
-              <div className="flex flex-wrap items-center justify-between gap-4">
+              {/* <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <h2 className="text-xl font-semibold text-slate-900">Hitched editor</h2>
                   <p className="text-sm text-slate-600">Edit the template text and event details here.</p>
@@ -282,8 +282,8 @@ export default function Home({
                 >
                   X
                 </button>
-              </div>
-              <div className="mt-6 grid gap-4">
+              </div> */}
+              {/* <div className="mt-6 grid gap-4">
                 <div className="grid gap-3 lg:grid-cols-2">
                   <label className="space-y-2 text-sm text-slate-700">
                     Family name
@@ -453,7 +453,7 @@ export default function Home({
                     Save Changes
                   </button>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         )}
@@ -697,11 +697,11 @@ export default function Home({
       </div> */}
 
       <div
-  className="hidden md:block bg-cover bg-center bg-no-repeat"
-  style={{ backgroundImage: `url(${assets.moon})` }}
->
-  <div className="flex justify-center md:h-175 lg:h-237.5 xl:h-275 2xl:h-325 3xl:h-[1600px] md:pt-48 lg:pt-72 3xl:pt-96"/>
-</div>
+        className="hidden md:block bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${assets.moon})` }}
+      >
+        <div className="flex justify-center md:h-175 lg:h-237.5 xl:h-275 2xl:h-325 3xl:h-[1600px] md:pt-48 lg:pt-72 3xl:pt-96" />
+      </div>
 
       <div className="md:hidden relative flex items-start justify-center">
 

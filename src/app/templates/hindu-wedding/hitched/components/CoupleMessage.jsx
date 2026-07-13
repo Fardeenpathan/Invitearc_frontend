@@ -33,28 +33,7 @@ export default function CoupleMessage({ data }) {
   const thingsToKnowDescription =
     data?.coupleMessageThingsToKnowDescription ||
     "To help you feel at ease and enjoy every moment of the celebrations, we’ve gathered a few thoughtful details we’d love for you to know before the big day.";
-  // const rsvpText =
-  //   data?.coupleMessageRsvpText || "Click on the Whatsapp icon to RSVP";
-  // const rsvpMode = data?.rsvpMode || data?.customData?.rsvpMode || "whatsapp";
-  // const whatsappNumber =
-  //   data?.whatsappNumber || data?.customData?.whatsappNumber || "919876543210";
-  // const rsvpFields = Array.isArray(data?.rsvpFields)
-  //   ? data.rsvpFields
-  //   : Array.isArray(data?.customData?.rsvpFields)
-  //     ? data.customData.rsvpFields
-  //     : [];
-  // const whatsappHref = `https://wa.me/${String(whatsappNumber).replace(/\D/g, "")}`;
   const locationTitle = data?.coupleMessageLocationTitle || "Location";
-  // const rsvpSectionHeading =
-  //   data?.rsvpSectionHeading ||
-  //   data?.customData?.rsvpSectionHeading ||
-  //   "Awaiting the Pleasure of Your Company";
-  // const rsvpButtonText =
-  //   data?.rsvpButtonText ||
-  //   data?.customData?.rsvpButtonText ||
-  //   (rsvpMode === "form" ? "Fill RSVP Form" : "Share your RSVP");
-  // const rsvpGoogleFormLink =
-  //   data?.rsvpGoogleFormLink || data?.customData?.rsvpGoogleFormLink || "";
   const locationDetails =
     data?.coupleMessageLocationDetails ||
     "The Central Park Hotel\nBund Garden Road,\nAgarkar Nagar, Pune,\nMaharashtra, 411001";
