@@ -172,7 +172,8 @@ export default function EditTemplatePage() {
   }, [editorData, fieldConfig]);
 
   const coupleMessageFields = useMemo(() => {
-    if (fieldConfig?.coupleMessageFields?.length) return fieldConfig.coupleMessageFields;
+    if (fieldConfig?.coupleMessageFields?.length)
+      return fieldConfig.coupleMessageFields;
     return [];
   }, [fieldConfig]);
 
@@ -249,11 +250,13 @@ export default function EditTemplatePage() {
           title_ceremony: "New Event",
           date: "Saturday, 10th December 2026",
           venue: "Royal Palace",
-          venue_address: "Bund Garden Road, Agarkar Nagar Pune, Maharashtra, 411001",
+          venue_address:
+            "Bund Garden Road, Agarkar Nagar Pune, Maharashtra, 411001",
           time: "6pm Onwards",
           theme: "Pretty in Pink: Florals, Pastels & Pink Hues Royal Palace",
           link: "https://maps.app.goo.gl/4GdkKFJfvdJCszja9",
-          image: "https://res.cloudinary.com/drl4fmhrq/image/upload/v1783490546/Group_2147225087_hyxljf.png",
+          image:
+            "https://res.cloudinary.com/drl4fmhrq/image/upload/v1783490546/Group_2147225087_hyxljf.png",
         },
       ],
     }));
@@ -392,31 +395,31 @@ export default function EditTemplatePage() {
     }));
   };
 
-const validatePreviewImageFile = async (file) => {
-  if (!file) {
-    return "No file selected.";
-  }
-
-  if (!file.type.startsWith("image/")) {
-    return "Please upload a valid image file.";
-  }
-
-  if (file.size > 200 * 1024) {
-    return "Preview image must be below 200 KB.";
-  }
-
-  try {
-    const { width, height } = await getImageDimensions(file);
-
-    if (width !== 1200 || height !== 630) {
-      return "Preview image must be exactly 1200 × 630 pixels.";
+  const validatePreviewImageFile = async (file) => {
+    if (!file) {
+      return "No file selected.";
     }
-  } catch (error) {
-    return "Unable to validate image dimensions.";
-  }
 
-  return null;
-};
+    if (!file.type.startsWith("image/")) {
+      return "Please upload a valid image file.";
+    }
+
+    if (file.size > 200 * 1024) {
+      return "Preview image must be below 200 KB.";
+    }
+
+    try {
+      const { width, height } = await getImageDimensions(file);
+
+      if (width !== 1200 || height !== 630) {
+        return "Preview image must be exactly 1200 × 630 pixels.";
+      }
+    } catch (error) {
+      return "Unable to validate image dimensions.";
+    }
+
+    return null;
+  };
 
   const getImageDimensions = (file) =>
     new Promise((resolve, reject) => {
@@ -462,82 +465,116 @@ const validatePreviewImageFile = async (file) => {
   //   }
   // };
 
+  const handlePreviewImageUpload = async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
 
-const handlePreviewImageUpload = async (event) => {
+    const error = await validatePreviewImageFile(file);
+
+    if (error) {
+      toast.error(error);
+      event.target.value = "";
+      return;
+    }
+
+    try {
+      setPreviewUploading(true);
+
+      const imageUrl = await uploadImage(file, "invitearc/preview-images");
+
+      setEditorData((prev) => ({
+        ...prev,
+        sharePreviewImage: imageUrl,
+      }));
+
+      toast.success("Preview image uploaded successfully.");
+    } catch (error) {
+      console.error(error);
+      toast.error("Unable to upload preview image. Please try again.");
+    } finally {
+      setPreviewUploading(false);
+      event.target.value = "";
+    }
+  };
+
+  const validateCoupleImageFile = (file) => {
+    if (!file) return "No file selected.";
+
+    if (!file.type.startsWith("image/")) {
+      return "Please upload a valid image.";
+    }
+
+    // 5 MB limit
+    if (file.size > 2 * 1024 * 1024) {
+      return "Image must be below 2MB.";
+    }
+
+    return null;
+  };
+
+  const handleCoupleImageUpload = async (event, imageKey) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const error = validateCoupleImageFile(file);
+
+    if (error) {
+      toast.error(error);
+      event.target.value = "";
+      return;
+    }
+
+    try {
+      setPreviewUploading(true);
+
+      const imageUrl = await uploadImage(file, "invitearc/couple-images");
+
+      setEditorData((prev) => ({
+        ...prev,
+        coupleMessageImages: {
+          ...(prev.coupleMessageImages || {}),
+          [imageKey]: imageUrl,
+        },
+      }));
+
+      toast.success("Image uploaded successfully.");
+    } catch (err) {
+      console.error(err);
+      toast.error("Unable to upload image.");
+    } finally {
+      setPreviewUploading(false);
+      event.target.value = "";
+    }
+  };
+
+
+  const handleLogoUpload = async (event) => {
   const file = event.target.files?.[0];
   if (!file) return;
 
-  const error = await validatePreviewImageFile(file);
+  const error = validateCoupleImageFile(file);
 
   if (error) {
     toast.error(error);
-    event.target.value = "";
     return;
   }
 
   try {
-    setPreviewUploading(true);
-
-    const imageUrl = await uploadImage(file, "invitearc/preview-images");
-
-    setEditorData((prev) => ({
-      ...prev,
-      sharePreviewImage: imageUrl,
-    }));
-
-    toast.success(
-      "Preview image uploaded successfully."
-    );
-  } catch (error) {
-    console.error(error);
-    toast.error("Unable to upload preview image. Please try again.");
-  } finally {
-    setPreviewUploading(false);
-    event.target.value = "";
-  }
-};
-
-
-
-const handleCoupleImageUpload = async (event, imageKey) => {
-  const file = event.target.files?.[0];
-  if (!file) return;
-
-  const error = await validatePreviewImageFile(file);
-
-  if (error) {
-    toast.error(error);
-    event.target.value = "";
-    return;
-  }
-
-  try {
-    setPreviewUploading(true);
-
     const imageUrl = await uploadImage(
       file,
-      "invitearc/couple-images"
+      "invitearc/logo-images"
     );
 
     setEditorData((prev) => ({
       ...prev,
-      coupleMessageImages: {
-        ...(prev.coupleMessageImages || {}),
-        [imageKey]: imageUrl,
-      },
+      Logo: imageUrl,
     }));
 
-    toast.success("Image uploaded successfully.");
+    toast.success("Logo uploaded successfully.");
   } catch (err) {
-    console.error(err);
-    toast.error("Unable to upload image.");
-  } finally {
-    setPreviewUploading(false);
-    event.target.value = "";
+    toast.error("Unable to upload logo.");
   }
 };
-
-
 
   const handleCoupleMessageImageUpload = async (event) => {
     const files = Array.from(event.target.files || []);
@@ -852,6 +889,7 @@ const handleCoupleImageUpload = async (event, imageKey) => {
                       updateField={updateField}
                       formatFieldLabel={formatFieldLabel}
                       getFieldIcon={getFieldIcon}
+                       handleLogoUpload={handleLogoUpload}
                     />
                   )}
 
@@ -880,6 +918,7 @@ const handleCoupleImageUpload = async (event, imageKey) => {
                         handleCoupleMessageImageUpload
                       }
                       removeCoupleMessageImage={removeCoupleMessageImage}
+                      handleCoupleImageUpload={handleCoupleImageUpload}
                     />
                   )}
                 </div>

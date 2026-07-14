@@ -2,17 +2,78 @@ export default function CoupleMessageEditor({
   coupleMessageFields = [],
   editorData = {},
   updateCoupleMessageField,
-  
+  handleCoupleImageUpload,
   handleCoupleMessageImageUpload,
   removeCoupleMessageImage,
 }) {
   const renderField = (field) => {
-    const name = field.name || field;
-    const label = field.label || name
-      .replace(/([A-Z])/g, " $1")
-      .replace(/_/g, " ")
-      .replace(/^./, (str) => str.toUpperCase());
+    const name = field.name || field.key || field;
+    const label =
+      field.label ||
+      name
+        .replace(/([A-Z])/g, " $1")
+        .replace(/_/g, " ")
+        .replace(/^./, (str) => str.toUpperCase());
     const type = field.type || "text";
+
+    console.log(field);
+    console.log(name);
+    console.log(typeof name);
+    if (type === "image") {
+      const imageKey = name.split(".")[1];
+
+      return (
+      
+<div key={name} className="space-y-3">
+  <label className="block text-sm font-semibold text-slate-800">
+    {label}
+  </label>
+
+  <div className="flex items-center gap-4">
+    {/* Image Preview */}
+    <div className="w-32 h-24 rounded-lg border border-slate-200 overflow-hidden bg-slate-100 flex items-center justify-center">
+      {editorData?.coupleMessageImages?.[imageKey] ? (
+        <img
+          src={editorData.coupleMessageImages[imageKey]}
+          alt={label}
+          className="w-full h-full object-cover"
+        />
+      ) : (
+        <span className="text-[10px] text-slate-400 text-center">
+          No Image
+        </span>
+      )}
+    </div>
+
+    {/* Upload */}
+    <div className="flex flex-col gap-1">
+      <label className="inline-flex cursor-pointer items-center rounded-xl bg-[#861E1D] px-4 py-2 text-sm font-normal text-white hover:bg-[#6f191c]">
+        {editorData?.coupleMessageImages?.[imageKey]
+          ? "Change Image"
+          : "Choose File"}
+
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => handleCoupleImageUpload(e, imageKey)}
+          className="hidden"
+        />
+      </label>
+
+      <p className="text-xs text-slate-500">
+        {editorData?.coupleMessageImages?.[imageKey]
+          ? "Image uploaded successfully ✓"
+          : "No file selected"}
+      </p>
+    </div>
+  </div>
+</div>
+
+
+      );
+
+    }
+
     const value = editorData[name] || "";
 
     if (name === "coupleMessageCarouselImages") {

@@ -57,7 +57,11 @@ detailFields: [
     { name: "groomDetails", label: "Groom details", type: "textarea" },
     { name: "brideDetails", label: "Bride details", type: "textarea" },
     { name: "eventIntro", label: "Event intro", type: "text" },
-    
+    {
+  name: "Logo",
+  label: "Wedding Logo",
+  type: "logo",
+},
   ],
   eventFields: [
     { name: "title_ceremony", label: "Title", type: "text" },
@@ -76,22 +80,22 @@ detailFields: [
     { name: "coupleMessageDescription", label: "Couple message description", type: "textarea" },
 
 {
-  key: "coupleMessageImages.image1",
+  name: "coupleMessageImages.image1",
   label: "Couple Image 1",
   type: "image",
 },
 {
-  key: "coupleMessageImages.image2",
+  name: "coupleMessageImages.image2",
   label: "Couple Image 2",
   type: "image",
 },
 {
-  key: "coupleMessageImages.image3",
+  name: "coupleMessageImages.image3",
   label: "Couple Image 3",
   type: "image",
 },
 {
-  key: "coupleMessageImages.image4",
+  name: "coupleMessageImages.image4",
   label: "Couple Image 4",
   type: "image",
 },

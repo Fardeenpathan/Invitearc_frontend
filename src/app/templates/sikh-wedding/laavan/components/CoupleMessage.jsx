@@ -99,17 +99,17 @@ export default function CoupleMessage({  data }) {
           <img
             src={data?.coupleMessageImages?.image1 || assets.one}
             alt="couple"
-            className="absolute right-40 w-35 h-28 md:right-78 md:w-60 md:h-46 lg:right-143 lg:w-106 lg:h-83 3xl:right-167 3xl:w-146 3xl:h-103 z-20"
+            className="absolute right-33 w-35 h-28 md:right-78 md:w-60 md:h-46 lg:right-143 lg:w-106 lg:h-83 3xl:right-167 3xl:w-146 3xl:h-103 z-20"
           />
       
           <img
             src={data?.coupleMessageImages?.image2 ||assets.two}
             alt="couple_one"
-            className="absolute top-15 left-6 w-32 h-55 md:left-21 md:top-24 md:w-54 md:h-90 lg:left-50 lg:top-45 lg:w-97 lg:h-166 3xl:left-68 3xl:top-60 3xl:w-117 3xl:h-186 z-10"
+            className=" absolute top-15 left-6 w-32 h-55 md:left-21 md:top-24 md:w-54 md:h-90 lg:left-50 lg:top-45 lg:w-97 lg:h-166 3xl:left-68 3xl:top-60 3xl:w-117 3xl:h-186 z-10"
           />
 
           <img
-            src={data?.coupleMessageImages?.image3 || assets.three}
+            src={assets.three}
             alt="flowers"
             className="absolute right-42 top-20 w-27 h-37 md:right-82 md:top-34 md:w-45 md:h-59 lg:right-150 lg:top-61 lg:w-82 lg:h-110 3xl:right-180 3xl:top-75 3xl:w-102 3xl:h-130 z-40"
           />
