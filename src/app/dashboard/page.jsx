@@ -7,7 +7,7 @@ import config from "../../config/config";
 import { AuthContext } from "../../context/AuthContext";
 import ShareLinkModal from "../../components/ShareLinkModal";
 // import { assets } from "../templates/hindu-wedding/hitched/assets";
-import hitchedPreview  from "../../../public/assets/preview-images/hitched.png";
+import hitchedPreview from "../../../public/assets/preview-images/hitched.png";
 import laavanPreview from "../../../public/assets/preview-images/laavan.png";
 
 export default function DashboardPage() {
@@ -52,11 +52,10 @@ export default function DashboardPage() {
   }, [loading, user, token, router]);
   console.log("Calling API with token:", token);
 
-const previewImages = {
-  hitched: hitchedPreview.src,
-  laavan: laavanPreview.src,
-};
-
+  const previewImages = {
+    hitched: hitchedPreview.src,
+    laavan: laavanPreview.src,
+  };
 
   return (
     <main className="bg-slate-50 min-h-screen text-slate-900">
@@ -100,26 +99,16 @@ const previewImages = {
                 key={clientTemplate._id}
                 className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
               >
-                  <div className="overflow-hidden rounded-3xl bg-slate-100">
-                  {/* <img
-                    src={assets.hitched_pre}
-                    alt={
-                      clientTemplate.templateId?.title ||
-                      "Purchased template preview"
+                <div className="overflow-hidden rounded-3xl bg-slate-100">
+                 
+                  <img
+                    src={
+                      previewImages[clientTemplate.templateId?.componentKey] ||
+                      hitchedAssets.hitched_pre
                     }
+                    alt={clientTemplate.templateId?.title || "Template Preview"}
                     className="h-full w-full object-cover"
-                  /> */}
-<img
-  src={
-    previewImages[clientTemplate.templateId?.componentKey] ||
-    hitchedAssets.hitched_pre
-  }
-  alt={clientTemplate.templateId?.title || "Template Preview"}
-  className="h-full w-full object-cover"
-/>
-
-
-
+                  />
                 </div>
                 <div className="mt-5 space-y-4">
                   <div className="flex flex-row gap-6 justify-stretch">
@@ -132,8 +121,7 @@ const previewImages = {
                     </p>
                   </div>
                   <p className="mt-3 text-sm leading-6 text-slate-600">
-                    {
-                      "Edit the template text and publish a shareable link."}
+                    {"Edit the template text and publish a shareable link."}
                   </p>
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-slate-700">
