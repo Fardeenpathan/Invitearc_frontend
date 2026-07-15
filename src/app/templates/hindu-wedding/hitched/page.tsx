@@ -132,58 +132,58 @@ export default function Home({
   const [bgImage, setBgImage] = useState(assets.Rohit_mobilebgn);
 
 
-  const updateField = (field: string, value: string) => {
-    setData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
+  // const updateField = (field: string, value: string) => {
+  //   setData((prev) => ({
+  //     ...prev,
+  //     [field]: value,
+  //   }));
+  // };
 
-  const updateEvent = (index: number, field: string, value: string) => {
-    setData((prev) => {
-      const events = [...(prev?.events || [])];
-      events[index] = {
-        ...events[index],
-        [field]: value,
-      };
-      return {
-        ...prev,
-        events,
-      };
-    });
-  };
+  // const updateEvent = (index: number, field: string, value: string) => {
+  //   setData((prev) => {
+  //     const events = [...(prev?.events || [])];
+  //     events[index] = {
+  //       ...events[index],
+  //       [field]: value,
+  //     };
+  //     return {
+  //       ...prev,
+  //       events,
+  //     };
+  //   });
+  // };
 
-  const saveEdits = async () => {
-    try {
-      const response = await axios.put(
-        `${config.api.baseUrl}/api/client-templates/${templateId}`,
-        {
-          customData: data,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          withCredentials: true,
-        }
-      );
+  // const saveEdits = async () => {
+  //   try {
+  //     const response = await axios.put(
+  //       `${config.api.baseUrl}/api/client-templates/${templateId}`,
+  //       {
+  //         customData: data,
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //         withCredentials: true,
+  //       }
+  //     );
 
-      setData(response.data.data.customData);
-      setEditMode(false);
-      alert("Template saved successfully");
-    } catch (error) {
-      console.error(error);
-      alert("Failed to save template");
-    }
-  };
-
-
+  //     setData(response.data.data.customData);
+  //     setEditMode(false);
+  //     alert("Template saved successfully");
+  //   } catch (error) {
+  //     console.error(error);
+  //     alert("Failed to save template");
+  //   }
+  // };
 
 
-  const resetEdits = () => {
-    setData(initialTemplateData || initialData);
-    setEditMode(false);
-  };
+
+
+  // const resetEdits = () => {
+  //   setData(initialTemplateData || initialData);
+  //   setEditMode(false);
+  // };
 
   const backgroundMusicUrl = data?.backgroundMusicUrl || assets.background_song;
 
@@ -264,7 +264,7 @@ export default function Home({
         className="bg-cover bg-top bg-no-repeat min-h-screen w-full relative overflow-hidden"
         style={{
           backgroundImage: `url(${bgImage})`,
-        }}
+        }} 
       >
         {/* {isOwner && (
           <></>

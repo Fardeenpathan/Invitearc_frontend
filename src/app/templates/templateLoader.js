@@ -1,16 +1,19 @@
 import dynamic from "next/dynamic";
 import { hitchedEditorFields } from "./hindu-wedding/hitched/fields";
 import { laavanEditorFields } from "./sikh-wedding/laavan/fields";
+import {mayraEditorFields} from "./hindu-wedding/mayra/fields";
 
 // Dynamic template loader - maps slug to template component
 const templateMap = {
   hitched: dynamic(() => import("./hindu-wedding/hitched/page"), { loading: () => <div>Loading...</div> }),
   laavan: dynamic(() => import("./sikh-wedding/laavan/page"), { loading: () => <div>Loading...</div>  }),
+  mayra: dynamic(() => import("./hindu-wedding/mayra/page"), { loading: () => <div>Loading...</div>  }),
 };
 
 const templateFieldConfigs = {
   hitched: hitchedEditorFields,
   laavan: laavanEditorFields,
+  mayra: mayraEditorFields,
 };
 
 export function getAvailableTemplates() {

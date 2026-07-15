@@ -24,7 +24,7 @@ import countdown_desktop_bg from "./assets/countdown_desktop_bg.png";
 import countdown_mobile_bg from "./assets/countdown_mobile_bg.jpg";
 import hitched_pre from "./assets/hitched_pre.png";
 export const assets = {
-  lamp: lamp.src,
+  lamp: lamp.src, 
   Rohit_mobilebgn: Rohit_mobilebgn.src,
   Rohit_bdmd: Rohit_bdmd.src,
   Rohit_desktop: Rohit_desktop.src,

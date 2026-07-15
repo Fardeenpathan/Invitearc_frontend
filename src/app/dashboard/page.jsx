@@ -95,6 +95,7 @@ export default function DashboardPage() {
             ))
           ) : templates.length > 0 ? (
             templates.map((clientTemplate) => (
+              
               <article
                 key={clientTemplate._id}
                 className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md"
@@ -104,7 +105,7 @@ export default function DashboardPage() {
                   <img
                     src={
                       previewImages[clientTemplate.templateId?.componentKey] ||
-                      hitchedAssets.hitched_pre
+                      hitchedPreview.src
                     }
                     alt={clientTemplate.templateId?.title || "Template Preview"}
                     className="h-full w-full object-cover"
