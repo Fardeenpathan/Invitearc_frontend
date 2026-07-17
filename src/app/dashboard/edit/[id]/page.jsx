@@ -41,7 +41,7 @@ export default function EditTemplatePage() {
   const [previewUploading, setPreviewUploading] = useState(false);
   const [sharePrefix, setSharePrefix] = useState("");
   const [baseUrl, setBaseUrl] = useState("");
- 
+
   const [view, setView] = useState(() => {
     if (typeof window === "undefined") return "mobile";
     if (window.innerWidth < 768) return "mobile";
@@ -107,26 +107,25 @@ export default function EditTemplatePage() {
         const defaultData = response.data.data?.templateId?.defaultData || {};
         const customData = response.data.data?.customData || {};
 
-
         const slug = response.data.data?.templateId?.slug;
-const assets = templateAssets?.[slug];
+        const assets = templateAssets?.[slug];
 
-const defaultCarousel = (assets?.carouselImages || []).map((img) => ({
-  image: img,
-}));
+        const defaultCarousel = (assets?.carouselImages || []).map((img) => ({
+          image: img,
+        }));
 
         // setEditorData({
         //   ...defaultData,
         //   ...customData,
         // });
         setEditorData({
-  ...defaultData,
-  ...customData,
-  coupleMessageCarouselImages:
-    customData?.coupleMessageCarouselImages?.length
-      ? customData.coupleMessageCarouselImages
-      : defaultCarousel,
-});
+          ...defaultData,
+          ...customData,
+          coupleMessageCarouselImages: customData?.coupleMessageCarouselImages
+            ?.length
+            ? customData.coupleMessageCarouselImages
+            : defaultCarousel,
+        });
       } catch (error) {
         console.log("Status:", error.response?.status);
         console.log("Data:", error.response?.data);
@@ -142,7 +141,7 @@ const defaultCarousel = (assets?.carouselImages || []).map((img) => ({
   const TemplateComponent = templateSlug
     ? templateComponents[templateSlug]
     : null;
-const defaultLogo = templateAssets?.[templateSlug]?.logo;
+  const defaultLogo = templateAssets?.[templateSlug]?.logo;
   const fieldConfig = useMemo(
     () => getTemplateFieldConfig(templateSlug),
     [templateSlug],
@@ -326,7 +325,6 @@ const defaultLogo = templateAssets?.[templateSlug]?.logo;
   };
 
   const updateField = (field, rawValue) => {
-    
     const trimmed = typeof rawValue === "string" ? rawValue.trim() : rawValue;
     let value = rawValue;
 
@@ -455,7 +453,6 @@ const defaultLogo = templateAssets?.[templateSlug]?.logo;
       img.src = url;
     });
 
-
   const handlePreviewImageUpload = async (event) => {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -537,34 +534,30 @@ const defaultLogo = templateAssets?.[templateSlug]?.logo;
     }
   };
 
-
   const handleLogoUpload = async (event) => {
-  const file = event.target.files?.[0];
-  if (!file) return;
+    const file = event.target.files?.[0];
+    if (!file) return;
 
-  const error = validateCoupleImageFile(file);
+    const error = validateCoupleImageFile(file);
 
-  if (error) {
-    toast.error(error);
-    return;
-  }
+    if (error) {
+      toast.error(error);
+      return;
+    }
 
-  try {
-    const imageUrl = await uploadImage(
-      file,
-      "invitearc/logo-images"
-    );
+    try {
+      const imageUrl = await uploadImage(file, "invitearc/logo-images");
 
-    setEditorData((prev) => ({
-      ...prev,
-      Logo: imageUrl,
-    }));
+      setEditorData((prev) => ({
+        ...prev,
+        Logo: imageUrl,
+      }));
 
-    toast.success("Logo uploaded successfully.");
-  } catch (err) {
-    toast.error("Unable to upload logo.");
-  }
-};
+      toast.success("Logo uploaded successfully.");
+    } catch (err) {
+      toast.error("Unable to upload logo.");
+    }
+  };
 
   const handleCoupleMessageImageUpload = async (event) => {
     const files = Array.from(event.target.files || []);
@@ -617,33 +610,6 @@ const defaultLogo = templateAssets?.[templateSlug]?.logo;
       ).filter((_, imageIndex) => imageIndex !== index),
     }));
   };
-
-//   const handleReplaceCoupleMessageImage = async (event, index) => {
-//   const file = event.target.files?.[0];
-//   if (!file) return;
-
-//   try {
-//     const imageUrl = await uploadImage(file, "invitearc/couple-carousel");
-
-//     setEditorData((prev) => {
-//       const images = [...(prev.coupleMessageCarouselImages || [])];
-
-//       images[index] = {
-//         image: imageUrl,
-//         imageFileName: file.name,
-//       };
-
-//       return {
-//         ...prev,
-//         coupleMessageCarouselImages: images,
-//       };
-//     });
-
-//     event.target.value = "";
-//   } catch (error) {
-//     console.error("Failed to replace image:", error);
-//   }
-// };
 
   const saveEditorChanges = async () => {
     if (!templateId) return;
@@ -906,9 +872,8 @@ const defaultLogo = templateAssets?.[templateSlug]?.logo;
                       updateField={updateField}
                       formatFieldLabel={formatFieldLabel}
                       getFieldIcon={getFieldIcon}
-                       handleLogoUpload={handleLogoUpload}
-                       defaultLogo={defaultLogo}
-
+                      handleLogoUpload={handleLogoUpload}
+                      defaultLogo={defaultLogo}
                     />
                   )}
 
@@ -933,10 +898,11 @@ const defaultLogo = templateAssets?.[templateSlug]?.logo;
                       coupleMessageFields={coupleMessageFields}
                       editorData={editorData}
                       updateCoupleMessageField={updateCoupleMessageField}
-  handleCoupleImageUpload={handleCoupleImageUpload}
-  handleCoupleMessageImageUpload={handleCoupleMessageImageUpload}
- 
-  removeCoupleMessageImage={removeCoupleMessageImage}
+                      handleCoupleImageUpload={handleCoupleImageUpload}
+                      handleCoupleMessageImageUpload={
+                        handleCoupleMessageImageUpload
+                      }
+                      removeCoupleMessageImage={removeCoupleMessageImage}
                     />
                   )}
                 </div>

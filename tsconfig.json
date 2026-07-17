@@ -30,7 +30,7 @@
     "**/*.mts",
     "**/*.ts",
     "**/*.tsx"
-, "src/app/templates/hindu-wedding/hitched/page.tsx", "src/app/templates/sikh-wedding/laavan/page.jsx", "src/app/templates/hinfu-wedding/myra/page.jsx"  ],
+, "src/app/templates/hindu-wedding/hitched/page.tsx", "src/app/templates/sikh-wedding/laavan/page.jsx", "src/app/templates/hinfu-wedding/myra/page.jsx", "src/app/templates/hindu-wedding/mayra/page.tsx"  ],
   "exclude": [
     "node_modules"
   ]

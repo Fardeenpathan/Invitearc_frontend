@@ -471,7 +471,6 @@ export default function Home({
         <div className="h-253 md:h-179 lg:h-330 3xl:h-421 flex flex-col items-center relative">
           <img
             src={data?.Logo || assets.logo}
-            // src={assets.logo}
             alt="logo"
             width={250}
             height={300}

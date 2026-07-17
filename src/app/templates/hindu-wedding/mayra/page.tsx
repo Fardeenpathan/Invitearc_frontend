@@ -473,7 +473,7 @@ export default function Home({
         </div>
       </div>
 
-      <CoupleMessage data={data} isOwner={isOwner} updateField={updateField} />
+      <CoupleMessage data={data}/>
 
       <div className="bg-[url('/assets/respo_three.webp')] md:bg-[url('/assets/bg_three.webp')] bg-cover bg-no-repeat" style={{
         backgroundImage: `url(${coupleImage})`,
@@ -484,8 +484,7 @@ export default function Home({
       </div>
 
       <MarriageCountdown data={data}
-        isOwner={isOwner}
-        updateField={updateField} />
+         />
 
     </>
   );
