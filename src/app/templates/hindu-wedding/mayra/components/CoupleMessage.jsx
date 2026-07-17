@@ -8,40 +8,6 @@ import { useEffect, useState } from "react";
 
 export default function CoupleMessage({ data }) {
   const [bgImage, setBgImage] = useState(assets.desktop_bg);
-  // const testimonial = [
-  //   {
-  //     img: "/assets/two.webp",
-  //   },
-
-  //   {
-  //     img: "/assets/two.webp",
-  //   },
-
-  //   {
-  //     img: "/assets/three.webp",
-  //   },
-
-  //   {
-  //     img: "/assets/four.webp",
-  //   },
-
-  //   {
-  //     img: "/assets/five.webp",
-  //   },
-
-  //   {
-  //     img: "/assets/one.webp",
-  //   },
-
-  //   {
-  //     img: "/assets/two.webp",
-  //   },
-
-  //   {
-  //     img: "/assets/three.webp",
-  //   },
-  // ];
-
   const extractImageSrc = (image) => {
     if (!image) return "";
     if (typeof image === "string") return image;
@@ -183,8 +149,8 @@ export default function CoupleMessage({ data }) {
           {thingsToKnowTitle}
         </h1>
 
-        <div className="flex justify-center mt-20 pb-24 md:pb-0">
-          <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-10 md:gap-14 lg:gap-50 3xl:gap-60">
+        <div className="flex justify-center mt-20 pb-24 md:pb-0 lg:px-40 px-12">
+          <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 gap-10 md:gap-14 lg:gap-30 3xl:gap-30">
             <div className="flex flex-col items-center justify-center text-center">
               <img
                 src={assets.weather}

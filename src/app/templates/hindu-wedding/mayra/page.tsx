@@ -113,32 +113,7 @@ export default function Home({
 }) {
   const [bgImage, setBgImage] = useState(assets.desktop_bg);
   const [coupleImage, setCoupleImage] = useState(assets.desktop_bg);
-  // const events = [
-  //   {
-  //     title_ceremony: "Mehendi",
-  //     image: assets.mehandi,
-  //     venue_address: <>Saturday, April 18th 2026 <br /> Join Us at 11 am <br /> The Leela Palace, Udaipur</>,
-  //     link: "https://maps.app.goo.gl/53z68ksx4cYgoNm59",
-  //   },
 
-
-
-  //   {
-  //     title_ceremony: "Shaadi",
-  //     image: assets.shaadi,
-  //     venue_address: <>Saturday, April 18th 2026 <br /> Join Us at 11 am <br /> The Leela Palace, Udaipur</>,
-  //     link: "https://maps.app.goo.gl/mxcwCxWhH1TXBC8c9",
-  //   },
-
-  //   {
-  //     title_ceremony: "Reception",
-  //     image: assets.reception,
-  //     venue_address: <>Saturday, April 18th 2026 <br /> Join Us at 11 am <br /> The Leela Palace, Udaipur</>,
-  //     link: "https://maps.app.goo.gl/f599YkTSEYKDEK5L7",
-  //   },
-
-
-  // ];
   const [data, setData] = useState({
     ...initialData,
     ...(initialTemplateData || {}),
@@ -257,20 +232,17 @@ export default function Home({
   }, []);
 
 
-
-
   return (
     <>
       <button
         onClick={() => {
           started ? toggleMusic() : startMusic();
         }}
-        className="fixed bottom-4 right-4 z-50 bg-[#FF35A1] text-white p-3 rounded-xl text-xl"
+        className="fixed bottom-4 right-4 z-50 bg-[#FF35A1] text-white p-3 rounded-xl text-xl cursor-pointer"
       >
         {playing ? "⏸" : "▶"}
       </button>
 
-      {/* <audio ref={audioRef} src="/assets/background_song.mp3" loop preload="auto" playsInline /> */}
       <audio
         key={backgroundMusicUrl}
         ref={audioRef}
@@ -450,7 +422,7 @@ export default function Home({
           </div>
 
 
-          <div className="flex items-center pt-30 lg:pt-50 3xl:pt-90 3xl:gap-60">
+          <div className="flex items-center pt-30 lg:pt-50 3xl:pt-90 3xl:gap-0 md:mr-8 mr-2">
             <Image
               src={assets.couple_one}
               alt="couple" width={900} height={1200}

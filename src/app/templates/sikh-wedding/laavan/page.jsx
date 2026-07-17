@@ -295,7 +295,7 @@ export default function Home({
         onClick={() => {
           started ? toggleMusic() : startMusic();
         }}
-        className="fixed bottom-4 right-4 z-50 bg-[#FF35A1] text-white p-3 rounded-xl text-xl"
+        className="fixed bottom-4 right-4 z-50 bg-[#FF35A1] text-white p-3 rounded-xl text-xl cursor-pointer"
       >
         {playing ? "⏸" : "▶"} 
       </button>

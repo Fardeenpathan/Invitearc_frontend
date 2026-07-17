@@ -189,13 +189,7 @@ export default function EventsEditor({
                     </p>
                   </div>
                   <div className="flex flex-col items-end gap-2 text-right">
-                    {/* <button
-                      type="button"
-                      onClick={() => handleEditFromThumbnail(index)}
-                      className="inline-flex h-8 items-center justify-center rounded-full border border-slate-300 bg-white px-3 text-xs font-semibold text-slate-700 hover:bg-slate-100"
-                    >
-                      Edit
-                    </button> */}
+                    
                     <button
                       type="button"
                       onClick={() => removeEventItem(index)}

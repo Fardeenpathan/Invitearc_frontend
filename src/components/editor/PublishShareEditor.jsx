@@ -181,7 +181,7 @@ export default function PublishShareEditor({
               />
             </div>
             <div className="flex flex-wrap gap-2">
-              <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs uppercase tracking-[0.2em] text-slate-600">
+              <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs uppercase tracking-[0.2em] text-slate-600 items-center flex">
                 {clientTemplate?.isPublished ? "Published" : "Draft"}
               </span>
               {!clientTemplate?.isPublished && (

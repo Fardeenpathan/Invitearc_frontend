@@ -49,7 +49,7 @@ const initialData = {
   groomDetails: "(Grandson of Mrs. Kanta & Mr. Kamal Bhawnani)\n(Son of Mrs. Kanchan & Mr. Sanjay Bhawnani)",
   brideName: "Ritika",
   brideDetails: "(Daughter of Mrs. Sarita & Mr. Pradeep Jain)",
-  brideGrandParentsName: "(Granddaughter of Shri J.S. Kapoor)", 
+  brideGrandParentsName: "(Granddaughter of Shri J.S. Kapoor)",
   blessingMessage: "With the heavenly blessings of",
   eventIntro: "On the following events",
   coupleMessageTitle: "Introducing",
@@ -254,7 +254,7 @@ export default function Home({
         onClick={() => {
           started ? toggleMusic() : startMusic();
         }}
-        className="fixed bottom-4 right-4 z-50 bg-[#FF35A1] text-white p-3 rounded-xl text-xl"
+        className="fixed bottom-4 right-4 z-50 bg-[#FF35A1] text-white p-3 rounded-xl text-xl cursor-pointer"
       >
         {playing ? "⏸" : "▶"}
       </button>
@@ -264,11 +264,9 @@ export default function Home({
         className="bg-cover bg-top bg-no-repeat min-h-screen w-full relative overflow-hidden"
         style={{
           backgroundImage: `url(${bgImage})`,
-        }} 
+        }}
       >
-        {/* {isOwner && (
-          <></>
-        )} */}
+
         {editMode && (
           <div className="fixed inset-0 z-50 overflow-auto bg-black/40 p-4">
             <div className="mx-auto w-full max-w-4xl rounded-3xl bg-white p-6 shadow-2xl">
@@ -620,7 +618,7 @@ export default function Home({
                   {event.image && (
                     <div className="mb-4 w-full rounded-3xl ">
                       <img
-                        src={event.image} 
+                        src={event.image}
                         alt={event.title_ceremony ? `${event.title_ceremony} image` : `Event ${i + 1} image`}
                         className="h-full w-full object-cover"
                       />
@@ -690,12 +688,6 @@ export default function Home({
       </div>
 
       <CoupleMessage data={data} />
-
-      {/* <div className="hidden md:block bg-[url('/assets/moon.webp')] bg-cover bg-no-repeat" style={{ backgroundImage: `url(${assets.moon})` }}>
-        <div className="lg:h-335 md:h-180 flex 3xl:pt-110 lg:pt-90 md:pt-50 3xl:h-410 justify-center">
-
-        </div>
-      </div> */}
 
       <div
         className="hidden md:block bg-cover bg-center bg-no-repeat"

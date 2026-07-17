@@ -6,7 +6,6 @@ import axios from "axios";
 import config from "../../config/config";
 import { AuthContext } from "../../context/AuthContext";
 import ShareLinkModal from "../../components/ShareLinkModal";
-// import { assets } from "../templates/hindu-wedding/hitched/assets";
 import hitchedPreview from "../../../public/assets/preview-images/hitched.png";
 import laavanPreview from "../../../public/assets/preview-images/laavan.png";
 import mayraPreview from "../../../public/assets/preview-images/mayra.png";

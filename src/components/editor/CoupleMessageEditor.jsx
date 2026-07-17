@@ -125,7 +125,7 @@ export default function CoupleMessageEditor({
                     >
                       Remove
                     </button>
-                    {/* </div> */}
+                   
                   </div>
                 );
               })}
