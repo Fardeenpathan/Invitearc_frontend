@@ -1,0 +1,203 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Upright:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Infant:wght@300;400;500;600;700&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Jacques+Francois&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Parisienne&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap');
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --color-primary: #A7783A;
+  box-sizing: border-box;
+  overflow-x :hidden;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+  background-color: #000;
+  overflow-x: hidden;
+}
+
+
+@theme inline {
+  --breakpoint-3xl: 120rem; /* 1920px */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--color-primary);
+
+  --font-cormorant: 'Cormorant', serif;
+  --font-cormorant-upright: 'Cormorant Upright', serif;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* Custom Fonts */
+
+.font-cormorant {
+  font-family: 'Cormorant', serif;
+}
+
+.font-Cormorant-upright {
+  font-family: 'Cormorant Upright', serif;
+}
+
+.font-cormorant-infant {
+  font-family: 'Cormorant Infant', serif;
+}
+
+.font-jacques-francois {
+  font-family: 'jacques francois', serif;
+}
+
+.font-parisienne-regular {
+  font-family: "Parisienne", cursive;
+}
+
+.font-eb-garamond {
+  font-family: "EB Garamond", serif;
+}
+
+.curved-edge {
+  --c: 120px; 
+  mask: radial-gradient(60% var(--c) at bottom, #0000 calc(100% - 2px), #000);
+  -webkit-mask: radial-gradient(60% var(--c) at bottom, #0000 calc(100% - 2px), #000);
+}
+
+@media (min-width: 640px) {
+  .curved-edge {
+    --c: 180px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .curved-edge {
+    --c: 250px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .curved-edge {
+    --c: 300px;
+  }
+}
+
+
+@keyframes flower-fall {
+  0% {
+    transform: translateY(-10vh) rotate(0deg);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0.8;
+  }
+}
+
+/* Base lamp */
+.floating-lamp {
+  position: absolute;
+  animation-name: lampFlow;
+  /* animation-duration: 2.5s; */
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+  opacity: 0;
+}
+@keyframes lampFlow {
+  0% {
+    transform: translateX(-30vw) translateY(40px) scale(var(--scale, 1));
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  25% {
+    transform: translateX(10vw) translateY(-20px) scale(var(--scale, 1));
+  }
+
+  45% {
+    transform: translateX(35vw) translateY(30px) scale(var(--scale, 1));
+  }
+
+  65% {
+    transform: translateX(60vw) translateY(-10px) scale(var(--scale, 1));
+  }
+
+  85% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(110vw) translateY(20px) scale(var(--scale, 1));
+    opacity: 0;
+  }
+}
+
+@keyframes lampFlowReverse {
+  0% {
+    transform: translateX(130vw) translateY(40px) scale(var(--scale, 1));
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  25% {
+    transform: translateX(90vw) translateY(-20px) scale(var(--scale, 1));
+  }
+
+  45% {
+    transform: translateX(65vw) translateY(30px) scale(var(--scale, 1));
+  }
+
+  65% {
+    transform: translateX(40vw) translateY(-10px) scale(var(--scale, 1));
+  }
+
+  85% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(-30vw) translateY(20px) scale(var(--scale, 1));
+    opacity: 0;
+  }
+}
+
+
+
+
+.swiper-pagination {
+  position: static !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;                 
+  margin-top: 30px;
+      
+}
+
+
+.swiper-pagination-bullet{
+ width: 12px!important; 
+ height: 12px!important;
+}
+
+.swiper-pagination-bullet-active {
+  background: #ffffff!important;
+}

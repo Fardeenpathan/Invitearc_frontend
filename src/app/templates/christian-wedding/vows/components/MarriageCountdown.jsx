@@ -11,7 +11,7 @@ export default function MarriageCountdown({data}) {
         hours: 0,
         minutes: 0,
     });
-
+ 
     useEffect(() => {
         const updateCountdown = () => {
             const now = new Date().getTime();

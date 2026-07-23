@@ -3,7 +3,7 @@ import HitchedTemplate from "../../templates/hindu-wedding/hitched/page";
 import LaavanTemplate from "../../templates/sikh-wedding/laavan/page";
 import MayraTemplate from "../../templates/hindu-wedding/mayra/page";
 import kalyanamTemplate from "../../templates/south-indian-wedding/kalyanam/page";
-// import niqahTemplate from "../../templates/muslim-wedding/niqah/page";
+import niqahTemplate from "../../templates/muslim-wedding/niqah/page";
 import vowsTemplate from "../../templates/christian-wedding/vows/page";
 
 export const dynamic = "force-dynamic";
@@ -13,7 +13,7 @@ const templateComponents = {
   laavan: LaavanTemplate,
   mayra: MayraTemplate,
   kalyanam: kalyanamTemplate,
-  // niqah:niqahTemplate,
+  niqah:niqahTemplate,
   vows:vowsTemplate,
 };
 
